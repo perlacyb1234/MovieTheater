@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @since 2019-04-22
  */
 @TableName("mtime_source_dict_t")
-public class MtimeSourceDictT extends Model<MtimeSourceDictT> {
+public class MtimeSourceDictT extends Model<com.stylefeng.guns.rest.persistence.model.film.MtimeSourceDictT> {
 
     private static final long serialVersionUID = 1L;
 

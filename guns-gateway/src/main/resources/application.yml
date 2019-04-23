@@ -40,7 +40,7 @@ spring:
     registry: zookeeper://localhost:2181
     reference:
       id: filmService
-      interface: com.stylefeng.guns.rest.service.FilmService
+      interface: com.stylefeng.guns.rest.api.FilmService
 logging:
   level.root: info
   level.com.stylefeng: debug

@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @since 2019-04-22
  */
 @TableName("mtime_year_dict_t")
-public class MtimeYearDictT extends Model<MtimeYearDictT> {
+public class MtimeYearDictT extends Model<com.stylefeng.guns.rest.persistence.model.film.MtimeYearDictT> {
 
     private static final long serialVersionUID = 1L;
 

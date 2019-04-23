@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @since 2019-04-22
  */
 @TableName("mtime_actor_t")
-public class MtimeActorT extends Model<MtimeActorT> {
+public class MtimeActorT extends Model<com.stylefeng.guns.rest.persistence.model.film.MtimeActorT> {
 
     private static final long serialVersionUID = 1L;
 

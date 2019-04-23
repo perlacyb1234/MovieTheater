@@ -41,10 +41,10 @@ spring:
       status: server
     registry:
       address: zookeeper://localhost:2181
-    scan: com.stylefeng.guns.rest.service.impl
+    scan: com.stylefeng.guns.rest.api.impl
 
- #   service:
- #    interface: com.stylefeng.guns.rest.service.FilmService
+ #   api:
+ #    interface: com.stylefeng.guns.rest.api.FilmService
  #   ref: filmService
 
 logging:
