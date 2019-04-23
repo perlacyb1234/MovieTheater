@@ -5,10 +5,7 @@ import com.stylefeng.guns.rest.api.FilmApi;
 import com.stylefeng.guns.rest.persistence.model.film.MtimeBannerT;
 import com.stylefeng.guns.rest.persistence.model.film.MtimeFilmT;
 import com.stylefeng.guns.rest.vo.ResponseVo;
-import com.stylefeng.guns.rest.vo.film.BannerVo;
-import com.stylefeng.guns.rest.vo.film.FilmInfoVo;
-import com.stylefeng.guns.rest.vo.film.FilmsVo;
-import com.stylefeng.guns.rest.vo.film.IndexVo;
+import com.stylefeng.guns.rest.vo.film.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,4 +37,17 @@ public class FilmController {
         responseVo.setData(indexVo);
         return responseVo;
     }
+
+
+    @RequestMapping(value = "getConditionList",method = RequestMethod.GET)
+    public ResponseVo getCondition(){
+        List<CatInfoVo> catInfoVos = filmApi.selectAllCatInfo();
+        List<SourceInfoVo> sourceInfoVos = filmApi.selectAllSourceInfo();
+        List<YearInfoVo> yearInfoVos = filmApi.selectAllYearInfo();
+        ConditionInfoVo conditionInfoVo = new ConditionInfoVo(catInfoVos, sourceInfoVos, yearInfoVos);
+        ResponseVo responseVo = new ResponseVo(0,conditionInfoVo);
+        return responseVo;
+    }
+
+
 }

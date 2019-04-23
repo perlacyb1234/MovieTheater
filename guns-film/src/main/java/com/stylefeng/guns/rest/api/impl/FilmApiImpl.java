@@ -3,14 +3,10 @@ package com.stylefeng.guns.rest.api.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.stylefeng.guns.rest.api.FilmApi;
-import com.stylefeng.guns.rest.persistence.dao.MtimeBannerTMapper;
-import com.stylefeng.guns.rest.persistence.dao.MtimeFilmTMapper;
-import com.stylefeng.guns.rest.persistence.model.film.MtimeBannerT;
-import com.stylefeng.guns.rest.persistence.model.film.MtimeFilmT;
+import com.stylefeng.guns.rest.persistence.dao.*;
+import com.stylefeng.guns.rest.persistence.model.film.*;
 import com.stylefeng.guns.rest.util.convert.DateConvert;
-import com.stylefeng.guns.rest.vo.film.BannerVo;
-import com.stylefeng.guns.rest.vo.film.FilmInfoVo;
-import com.stylefeng.guns.rest.vo.film.FilmsVo;
+import com.stylefeng.guns.rest.vo.film.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +28,58 @@ public class FilmApiImpl implements FilmApi {
     @Autowired
     MtimeBannerTMapper bannerMapper;
 
+    @Autowired
+    MtimeCatDictTMapper catMapper;
+
+    @Autowired
+    MtimeSourceDictTMapper sourceMapper;
+
+    @Autowired
+    MtimeYearDictTMapper yearMapper;
+    @Override
+    public List<CatInfoVo> selectAllCatInfo() {
+        List<MtimeCatDictT> catDictTList = catMapper.selectList(new EntityWrapper<>());
+        List<CatInfoVo> catInfoVos = new ArrayList<>();
+        for (MtimeCatDictT catDictT : catDictTList) {
+            if (catDictT.getShowName().equals("爱情")){
+                catInfoVos.add(new CatInfoVo(catDictT.getUuid(),catDictT.getShowName(),true));
+            }
+            else {
+                catInfoVos.add(new CatInfoVo(catDictT.getUuid(),catDictT.getShowName(),false));
+            }
+        }
+        return catInfoVos;
+    }
+
+    @Override
+    public List<SourceInfoVo> selectAllSourceInfo() {
+        List<MtimeSourceDictT> sourceList = sourceMapper.selectList(new EntityWrapper<>());
+        List<SourceInfoVo> sourceInfoVos = new ArrayList<>();
+        for (MtimeSourceDictT source : sourceList) {
+            if (source.getShowName().equals("美国")){
+                sourceInfoVos.add(new SourceInfoVo(source.getUuid(),source.getShowName(),true));
+            }
+            else {
+                sourceInfoVos.add(new SourceInfoVo(source.getUuid(),source.getShowName(),false));
+            }
+        }
+        return sourceInfoVos;
+    }
+
+    @Override
+    public List<YearInfoVo> selectAllYearInfo() {
+        List<MtimeYearDictT> yearList = yearMapper.selectList(new EntityWrapper<>());
+        List<YearInfoVo> yearInfoVos = new ArrayList<>();
+        for (MtimeYearDictT year : yearList) {
+            if (year.getShowName().equals("2018")){
+                yearInfoVos.add(new YearInfoVo(year.getUuid(),year.getShowName(),true));
+            }
+            else{
+                yearInfoVos.add(new YearInfoVo(year.getUuid(),year.getShowName(),false));
+            }
+        }
+        return yearInfoVos;
+    }
 
     @Override
     public List<BannerVo> selectAllBanner() {

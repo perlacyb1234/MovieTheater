@@ -1,5 +1,7 @@
 package com.stylefeng.guns.rest.vo;
 
+import com.stylefeng.guns.rest.vo.film.ConditionInfoVo;
+
 /**
  * Created by Cyb
  * Date 2019/4/23/023  Time 11:14
@@ -10,6 +12,8 @@ public class ResponseVo {
     private String msg;
     private String imgPre;
     private Object data;
+    private int nowPage;
+    private int totalPage;
     public ResponseVo() {
     }
 
@@ -22,6 +26,27 @@ public class ResponseVo {
         this.status = status;
         this.msg = msg;
         this.imgPre = imgPre;
+        this.data = data;
+    }
+
+    public int getNowPage() {
+        return nowPage;
+    }
+
+    public void setNowPage(int nowPage) {
+        this.nowPage = nowPage;
+    }
+
+    public int getTotalPage() {
+        return totalPage;
+    }
+
+    public void setTotalPage(int totalPage) {
+        this.totalPage = totalPage;
+    }
+
+    public ResponseVo(int status, Object data) {
+        this.status = status;
         this.data = data;
     }
 

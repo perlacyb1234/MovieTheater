@@ -1,9 +1,6 @@
 package com.stylefeng.guns.rest.api;
 
-import com.stylefeng.guns.rest.persistence.model.film.MtimeFilmT;
-import com.stylefeng.guns.rest.vo.film.BannerVo;
-import com.stylefeng.guns.rest.vo.film.FilmInfoVo;
-import com.stylefeng.guns.rest.vo.film.FilmsVo;
+import com.stylefeng.guns.rest.vo.film.*;
 
 import java.util.List;
 
@@ -18,4 +15,8 @@ public interface FilmApi {
     List<FilmInfoVo> selectBoxRanking();
     List<FilmInfoVo> selectExpectRanking();
     List<FilmInfoVo> selectTop100();
+    List<CatInfoVo> selectAllCatInfo();
+    List<SourceInfoVo> selectAllSourceInfo();
+    List<YearInfoVo> selectAllYearInfo();
+
 }
