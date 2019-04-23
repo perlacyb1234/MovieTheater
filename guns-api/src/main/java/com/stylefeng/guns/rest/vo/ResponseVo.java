@@ -22,6 +22,14 @@ public class ResponseVo {
         this.msg = msg;
     }
 
+    public ResponseVo(int status, String imgPre, Object data, int nowPage, int totalPage) {
+        this.status = status;
+        this.imgPre = imgPre;
+        this.data = data;
+        this.nowPage = nowPage;
+        this.totalPage = totalPage;
+    }
+
     public ResponseVo(int status, String msg, String imgPre, Object data) {
         this.status = status;
         this.msg = msg;
