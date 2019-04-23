@@ -18,5 +18,8 @@
         <result column="film_time" property="filmTime" />
         <result column="film_status" property="filmStatus" />
     </resultMap>
-
+    <select id="selectByName" resultMap="BaseResultMap">
+        select * from mtime_film_t
+        where film_name = #{filmName}
+    </select>
 </mapper>

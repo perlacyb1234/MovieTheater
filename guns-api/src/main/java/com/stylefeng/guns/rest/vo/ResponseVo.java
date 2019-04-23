@@ -1,6 +1,7 @@
 package com.stylefeng.guns.rest.vo;
 
 import com.stylefeng.guns.rest.vo.film.ConditionInfoVo;
+import com.stylefeng.guns.rest.vo.film.FilmDetailVo;
 
 /**
  * Created by Cyb
@@ -33,6 +34,12 @@ public class ResponseVo {
     public ResponseVo(int status, String msg, String imgPre, Object data) {
         this.status = status;
         this.msg = msg;
+        this.imgPre = imgPre;
+        this.data = data;
+    }
+
+    public ResponseVo(int status, String imgPre, Object data) {
+        this.status = status;
         this.imgPre = imgPre;
         this.data = data;
     }

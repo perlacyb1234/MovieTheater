@@ -28,6 +28,13 @@ public class FilmApiImpl implements FilmApi {
     MtimeFilmTMapper filmMapper;
 
     @Autowired
+    MtimeActorTMapper actorMapper;
+
+
+    @Autowired
+    MtimeFilmInfoTMapper filmInfoMapper;
+
+    @Autowired
     MtimeBannerTMapper bannerMapper;
 
     @Autowired
@@ -52,6 +59,7 @@ public class FilmApiImpl implements FilmApi {
         }
         return catInfoVos;
     }
+
 
     @Override
     public List<SourceInfoVo> selectAllSourceInfo() {
@@ -79,6 +87,70 @@ public class FilmApiImpl implements FilmApi {
             }
         }
         return yearInfoVos;
+    }
+
+    @Override
+    public FilmDetailVo getFilmDetail(String searchValue, String searchType) {
+        //1表示按名字查找，通过名字找到id，统一使用id
+        if ("1".equals(searchType)) {
+            MtimeFilmT mtimeFilmT = filmMapper.selectByName(searchValue);
+            searchValue = String.valueOf(mtimeFilmT.getUuid());
+        }
+        MtimeFilmT filmT = filmMapper.selectById(searchValue);
+        MtimeFilmInfoT filmInfo = filmInfoMapper.selectById(searchValue);
+
+        //获取到所有需要的信息，下面进行封装
+        FilmDetailVo filmDetailVo = new FilmDetailVo();
+        filmDetailVo.setFilmName(filmT.getFilmName());
+        filmDetailVo.setFilmEnName(filmInfo.getFilmEnName());
+        filmDetailVo.setImgAddress(filmT.getImgAddress());
+        filmDetailVo.setScore(filmT.getFilmScore());
+        filmDetailVo.setSocreNum(filmInfo.getFilmScoreNum() + "万人评分");
+        filmDetailVo.setTotalBox(filmT.getFilmBoxOffice() + "万人民币");
+        String filmCats = filmT.getFilmCats();
+        String[] split = filmCats.split("#");
+        StringBuilder sb = new StringBuilder();
+        for (String s : split) {
+            int i = 0;
+            i++;
+            //将电影类型通过逗号拼接
+            if (i == split.length) {
+                sb.append(s);
+            } else {
+                sb.append(s).append(",");
+            }
+        }
+        filmDetailVo.setInfo1(sb.toString());
+        int filmArea = filmT.getFilmArea();
+        String areaName = sourceMapper.selectById(filmArea).getShowName();
+        int sourceArea = filmT.getFilmSource();
+        String sourceName = sourceMapper.selectById(sourceArea).getShowName();
+        int filmLength = filmInfo.getFilmLength();
+        filmDetailVo.setInfo2(areaName + ", " + sourceName + "/" + filmLength + "分钟");
+        Date filmTime = filmT.getFilmTime();
+        String filmDate = new DateConvert().convert(filmTime);
+        filmDetailVo.setInfo3(filmDate + " " + areaName + "上映");
+        String biography = filmInfo.getBiography();
+        int directorId = filmInfo.getDirectorId();
+        MtimeActorT directorT = actorMapper.selectById(directorId);
+        List<Integer> actorIds = actorMapper.selectActorIdsByFilmId(Integer.parseInt(searchValue));
+        List<Actor> actorList = new ArrayList<>();
+        for (Integer actorId : actorIds) {
+            MtimeActorT actorT = actorMapper.selectById(actorId);
+            String roleName = actorMapper.getRoleNameByFilmIdAndActorId(searchValue, actorId);
+            actorList.add(new Actor(actorT.getActorImg(),actorT.getActorName(),roleName));
+        }
+        Actor director = new Actor();
+        director.setDirectorName(directorT.getActorName());
+        director.setImgAddress(directorT.getActorImg());
+        Actors actors = new Actors(director,actorList);
+        filmDetailVo.setInfo4(new InfoVo(biography, actors));
+        String filmImgs = filmInfo.getFilmImgs();
+        String[] split1 = filmImgs.split(",");
+        Imgs imgs = new Imgs(split1[0],split1[1],split1[2],split1[3],split1[4]);
+        filmDetailVo.setImgs(imgs);
+        filmDetailVo.setFilmId(filmT.getUuid());
+        return filmDetailVo;
     }
 
     @Override

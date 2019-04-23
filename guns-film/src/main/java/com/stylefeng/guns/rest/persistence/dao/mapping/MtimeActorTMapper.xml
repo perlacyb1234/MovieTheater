@@ -8,5 +8,14 @@
         <result column="actor_name" property="actorName" />
         <result column="actor_img" property="actorImg" />
     </resultMap>
+    <select id="selectActorIdsByFilmId" resultType="int">
+        select actor_id from mtime_film_actor_t
+        where film_id = #{filmId}
+    </select>
+
+    <select id="getRoleNameByFilmIdAndActorId" resultType="string">
+        select role_name from mtime_film_actor_t
+        where film_id = #{filmId} and actor_id = #{actorId}
+    </select>
 
 </mapper>

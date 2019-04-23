@@ -104,7 +104,7 @@ public class GenQo {
     private Boolean daoSwitch = false;
 
     /**
-     * service
+     * api
      */
     private Boolean serviceSwitch = false;
 

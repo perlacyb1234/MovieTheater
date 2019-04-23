@@ -36,7 +36,7 @@ spring:
     application:
       name: dubbo-film-server
     protocol:
-      prot: 20880     #每个模块需要配置不同端口
+      port: 20880     #每个模块需要配置不同端口
       name: dubbo
       status: server
     registry:
