@@ -1,12 +1,11 @@
-package com.stylefeng.guns.rest.persistence.controller;
+package com.stylefeng.guns.rest.controller;
 
 
-import com.stylefeng.guns.rest.persistence.service.IMtimeBrandDictTService;
-import com.stylefeng.guns.rest.persistence.service.IMtimeCinemaTService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.stylefeng.guns.rest.api.IMtimeBrandDictTService;
+import com.stylefeng.guns.rest.api.IMtimeCinemaTService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
@@ -24,14 +23,14 @@ import java.util.Map;
 @RequestMapping("/cinema")
 public class MtimeCinemaTController {
 
-    @Autowired
+    @Reference
     IMtimeCinemaTService mtimeCinemaTService;
-    @Autowired
+    @Reference
     IMtimeBrandDictTService mtimeBrandDictTService;
 
     @RequestMapping("getCinemas")
     @ResponseBody
-    public Map getCinemas(String brandId,String districtId,String hallType,String nowPage,String pageSize){
+    public Map getCinemas(String brandId, String districtId, String hallType, String nowPage, String pageSize){
 
         Map<String, Object> map = new HashMap<>();
 
@@ -77,10 +76,9 @@ public class MtimeCinemaTController {
 
     }
 
-
     @RequestMapping("getCondition")
     @ResponseBody
-    public Map getCondition(String brandId,String hallType,String areaId){
+    public Map getCondition(String brandId, String hallType, String areaId){
 
         if(brandId == null || brandId == ""){
             brandId = "99";
@@ -107,7 +105,6 @@ public class MtimeCinemaTController {
         return map;
 
     }
-
 
 }
 

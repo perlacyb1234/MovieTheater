@@ -1,10 +1,11 @@
-package com.stylefeng.guns.rest.persistence.model;
+package com.stylefeng.guns.rest.persistence.model.cinema;
 
-import com.baomidou.mybatisplus.enums.IdType;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+
 import java.io.Serializable;
 
 /**
@@ -15,8 +16,8 @@ import java.io.Serializable;
  * @author liangzhen
  * @since 2019-04-21
  */
-@TableName("mtime_area_dict_t")
-public class MtimeAreaDictT extends Model<MtimeAreaDictT> {
+@TableName("mtime_hall_dict_t")
+public class MtimeHallDictT extends Model<MtimeHallDictT> {
 
     private static final long serialVersionUID = 1L;
 
@@ -30,6 +31,11 @@ public class MtimeAreaDictT extends Model<MtimeAreaDictT> {
      */
     @TableField("show_name")
     private String showName;
+    /**
+     * 座位文件存放地址
+     */
+    @TableField("seat_address")
+    private String seatAddress;
 
 
     public Integer getUuid() {
@@ -48,6 +54,14 @@ public class MtimeAreaDictT extends Model<MtimeAreaDictT> {
         this.showName = showName;
     }
 
+    public String getSeatAddress() {
+        return seatAddress;
+    }
+
+    public void setSeatAddress(String seatAddress) {
+        this.seatAddress = seatAddress;
+    }
+
     @Override
     protected Serializable pkVal() {
         return this.uuid;
@@ -55,9 +69,10 @@ public class MtimeAreaDictT extends Model<MtimeAreaDictT> {
 
     @Override
     public String toString() {
-        return "MtimeAreaDictT{" +
+        return "MtimeHallDictT{" +
         "uuid=" + uuid +
         ", showName=" + showName +
+        ", seatAddress=" + seatAddress +
         "}";
     }
 }

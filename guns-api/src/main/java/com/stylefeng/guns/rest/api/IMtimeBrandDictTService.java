@@ -1,7 +1,8 @@
-package com.stylefeng.guns.rest.persistence.service;
+package com.stylefeng.guns.rest.api;
 
-import com.stylefeng.guns.rest.persistence.model.MtimeBrandDictT;
+
 import com.baomidou.mybatisplus.service.IService;
+import com.stylefeng.guns.rest.persistence.model.cinema.MtimeBrandDictT;
 
 import java.util.Map;
 

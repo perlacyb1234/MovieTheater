@@ -1,10 +1,13 @@
-package com.stylefeng.guns.rest.persistence.Vo;
+package com.stylefeng.guns.rest.vo.cinema;
+
+import java.io.Serializable;
 
 /**
  * Create by John(LiangZhen)
  * Date 2019/4/21 Time 23:48
  */
-public class AreaVo {
+
+public class AreaVo implements Serializable {
 
     int areaId;
     String areaName;

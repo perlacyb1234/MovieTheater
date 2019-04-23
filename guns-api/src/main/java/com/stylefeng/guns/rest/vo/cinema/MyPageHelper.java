@@ -1,4 +1,4 @@
-package com.stylefeng.guns.rest.persistence.Vo;
+package com.stylefeng.guns.rest.vo.cinema;
 
 import java.util.ArrayList;
 import java.util.List;
