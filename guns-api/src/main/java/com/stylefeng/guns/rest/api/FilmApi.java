@@ -18,6 +18,7 @@ public interface FilmApi {
     List<CatInfoVo> selectAllCatInfo();
     List<SourceInfoVo> selectAllSourceInfo();
     List<YearInfoVo> selectAllYearInfo();
-    List<FilmInfoVo> searchOnCondition(int showType,int sortId,int catId,int sourceId,int yearId,int nowPage,int pageSize);
-
+    List<FilmInfoVo> searchOnCondition(int showType,int sortId,int catId,int sourceId,
+                                       int yearId,int nowPage,int pageSize);
+    FilmDetailVo getFilmDetail(String searchValue,String searchType);
 }

@@ -6,9 +6,7 @@ import com.stylefeng.guns.rest.persistence.model.film.MtimeBannerT;
 import com.stylefeng.guns.rest.persistence.model.film.MtimeFilmT;
 import com.stylefeng.guns.rest.vo.ResponseVo;
 import com.stylefeng.guns.rest.vo.film.*;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -49,5 +47,30 @@ public class FilmController {
         return responseVo;
     }
 
+    @RequestMapping(value = "getFilms",method = RequestMethod.GET)
+    public ResponseVo getFilms(@RequestParam(value = "showType",defaultValue = "1") int showType,
+                               @RequestParam(value = "sortId",defaultValue = "1")int sortId,
+                               @RequestParam(value = "catId",defaultValue = "99")int catId,
+                               @RequestParam(value = "sourceId",defaultValue = "99")int sourceId,
+                               @RequestParam(value = "yearId",defaultValue = "99")int yearId,
+                               @RequestParam(value = "nowPage",defaultValue = "1")int nowPage,
+                               @RequestParam(value = "pageSize",defaultValue = "18")int pageSize){
+        List<FilmInfoVo> filmInfoVos =
+                filmApi.searchOnCondition(showType, sortId, catId, sourceId, yearId, nowPage, pageSize);
+        int totalPage = filmInfoVos.size()/nowPage;
+        if (filmInfoVos.size() == 0){
+            nowPage = 1;
+            totalPage = 1;
+        }
+        ResponseVo responseVo = new ResponseVo(0,"http://img.meetingshop.cn/",filmInfoVos,
+                nowPage,totalPage);
+        return responseVo;
+    }
 
+    @RequestMapping("films/{searchValue}")
+    public ResponseVo getFilmDetail(@PathVariable("searchValue")String searchValue,String searchType){
+        FilmDetailVo filmDetail = filmApi.getFilmDetail(searchValue, searchType);
+        ResponseVo responseVo = new ResponseVo(0, "http://img.meetingshop.cn/", filmDetail);
+        return responseVo;
+    }
 }

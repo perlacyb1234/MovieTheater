@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface MtimeFilmTMapper extends BaseMapper<MtimeFilmT> {
 
+    MtimeFilmT selectByName(String filmName);
 }
