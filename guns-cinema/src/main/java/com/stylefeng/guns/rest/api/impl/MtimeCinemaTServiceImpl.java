@@ -76,14 +76,17 @@ public class MtimeCinemaTServiceImpl extends ServiceImpl<MtimeCinemaTMapper, Mti
 
     @Override
     public Map selectFieldsById(String cinemaId) {
-
+        HashMap<String, Object> map = new HashMap<>();
         MtimeCinemaT mtimeCinemaT = mtimeCinemaTMapper.selectCinemaByCinemaId(cinemaId);
-        CinemaInfoVo cinemaInfo = new CinemaInfoVo();
-        cinemaInfo.setCinemaId(mtimeCinemaT.getUuid());
-        cinemaInfo.setImgUrl(mtimeCinemaT.getImgAddress());
-        cinemaInfo.setCinemaName(mtimeCinemaT.getCinemaName());
-        cinemaInfo.setCinemaPhone(mtimeCinemaT.getCinemaPhone());
-        cinemaInfo.setCinemaAdress(mtimeCinemaT.getCinemaAddress());
+        if(mtimeCinemaT != null){
+            CinemaInfoVo cinemaInfo = new CinemaInfoVo();
+            cinemaInfo.setCinemaId(mtimeCinemaT.getUuid());
+            cinemaInfo.setImgUrl(mtimeCinemaT.getImgAddress());
+            cinemaInfo.setCinemaName(mtimeCinemaT.getCinemaName());
+            cinemaInfo.setCinemaPhone(mtimeCinemaT.getCinemaPhone());
+            cinemaInfo.setCinemaAdress(mtimeCinemaT.getCinemaAddress());
+            map.put("cinemaInfo",cinemaInfo);
+        }
 
         ArrayList<MtimeFieldT> mtimeFilmFieldList = mtimeFieldTMapper.selectFilmFieldsByCinemaId(cinemaId);
         ArrayList<MtimeHallFilmInfoT> mtimeHallFilmInfoList = new ArrayList<>();
@@ -147,10 +150,6 @@ public class MtimeCinemaTServiceImpl extends ServiceImpl<MtimeCinemaTMapper, Mti
             filmList.add(hashMap);
         }
 
-        HashMap<String, Object> map = new HashMap<>();
-        if(cinemaInfo != null){
-            map.put("cinemaInfo",cinemaInfo);
-        }
         if(!filmList.isEmpty()){
             map.put("filmList",filmList);
         }
