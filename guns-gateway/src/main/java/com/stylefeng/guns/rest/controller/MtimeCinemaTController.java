@@ -110,10 +110,14 @@ public class MtimeCinemaTController {
     @RequestMapping("getFields")
     @ResponseBody
     public Map getFields(String cinemaId){
-
-        Map data = mtimeCinemaTService.selectFieldsById(cinemaId);
-
         HashMap<String, Object> map = new HashMap<>();
+
+        if(cinemaId == null || cinemaId == ""){
+            map.put("status",999);
+            map.put("msg","系统出现异常，请联系管理员");
+            return map;
+        }
+        Map data = mtimeCinemaTService.selectFieldsById(cinemaId);
 
         if(!data.isEmpty()){
             map.put("status",0);
@@ -126,6 +130,32 @@ public class MtimeCinemaTController {
 
         return map;
 
+    }
+
+
+    @RequestMapping("getFieldInfo")
+    @ResponseBody
+    public Map getFieldInfo(String cinemaId,String fieldId){
+
+        HashMap<String, Object> map = new HashMap<>();
+
+        if(cinemaId == null || cinemaId == "" || fieldId == null || fieldId == ""){
+            map.put("status",999);
+            map.put("msg","系统出现异常，请联系管理员");
+            return map;
+        }
+
+        Map data = mtimeCinemaTService.selectFieldByCinemaIdAndFieldId(cinemaId,fieldId);
+
+        if(!data.isEmpty()){
+            map.put("status",0);
+            map.put("imgPre","http://img.meetingshop.cn/");
+            map.put("data",data);
+        }else{
+            map.put("status",1);
+            map.put("msg","影院信息查询失败");
+        }
+        return map;
     }
 
 }
