@@ -1,13 +1,16 @@
-package com.stylefeng.guns.rest.persistence.service.impl;
+package com.stylefeng.guns.rest.api.impl;
 
-import com.stylefeng.guns.rest.persistence.Vo.CinemaVo;
-import com.stylefeng.guns.rest.persistence.Vo.MyPageHelper;
-import com.stylefeng.guns.rest.persistence.model.MtimeCinemaT;
-import com.stylefeng.guns.rest.persistence.dao.MtimeCinemaTMapper;
-import com.stylefeng.guns.rest.persistence.service.IMtimeCinemaTService;
+import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.stylefeng.guns.rest.api.IMtimeCinemaTService;
+import com.stylefeng.guns.rest.persistence.dao.MtimeCinemaTMapper;
+import com.stylefeng.guns.rest.persistence.model.cinema.MtimeCinemaT;
+import com.stylefeng.guns.rest.vo.cinema.CinemaVo;
+import com.stylefeng.guns.rest.vo.cinema.MyPageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
+
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +25,8 @@ import java.util.Map;
  * @author liangzhen
  * @since 2019-04-21
  */
-@Service
+@Service(interfaceClass = IMtimeCinemaTService.class)
+@Component
 public class MtimeCinemaTServiceImpl extends ServiceImpl<MtimeCinemaTMapper, MtimeCinemaT> implements IMtimeCinemaTService {
 
     @Autowired
@@ -62,4 +66,6 @@ public class MtimeCinemaTServiceImpl extends ServiceImpl<MtimeCinemaTMapper, Mti
         return map;
 
     }
+
+
 }
