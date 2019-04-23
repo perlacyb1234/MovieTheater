@@ -61,6 +61,12 @@ public class MtimeFieldT extends Model<MtimeFieldT> {
      */
     private Integer price;
 
+    /**
+     * 座位文件存放地址
+     */
+    @TableField("seat_address")
+    private String seatAddress;
+
 
     public Integer getUuid() {
         return uuid;
@@ -126,6 +132,14 @@ public class MtimeFieldT extends Model<MtimeFieldT> {
         this.price = price;
     }
 
+    public String getSeatAddress() {
+        return seatAddress;
+    }
+
+    public void setSeatAddress(String seatAddress) {
+        this.seatAddress = seatAddress;
+    }
+
     @Override
     protected Serializable pkVal() {
         return this.uuid;
@@ -134,14 +148,15 @@ public class MtimeFieldT extends Model<MtimeFieldT> {
     @Override
     public String toString() {
         return "MtimeFieldT{" +
-        "uuid=" + uuid +
-        ", cinemaId=" + cinemaId +
-        ", filmId=" + filmId +
-        ", beginTime=" + beginTime +
-        ", endTime=" + endTime +
-        ", hallId=" + hallId +
-        ", hallName=" + hallName +
-        ", price=" + price +
-        "}";
+                "uuid=" + uuid +
+                ", cinemaId=" + cinemaId +
+                ", filmId=" + filmId +
+                ", beginTime='" + beginTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", hallId=" + hallId +
+                ", hallName='" + hallName + '\'' +
+                ", price=" + price +
+                ", seatAddress='" + seatAddress + '\'' +
+                '}';
     }
 }

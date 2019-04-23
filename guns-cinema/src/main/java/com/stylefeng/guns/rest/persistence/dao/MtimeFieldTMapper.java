@@ -17,4 +17,6 @@ import java.util.ArrayList;
 public interface MtimeFieldTMapper extends BaseMapper<MtimeFieldT> {
 
     ArrayList<MtimeFieldT> selectFilmFieldsByCinemaId(String cinemaId);
+
+    MtimeFieldT selectFilmFieldsByFieldId(String fieldId);
 }
