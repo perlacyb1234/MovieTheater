@@ -4,9 +4,12 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.stylefeng.guns.rest.api.IMtimeCinemaTService;
 import com.stylefeng.guns.rest.persistence.dao.MtimeCinemaTMapper;
+import com.stylefeng.guns.rest.persistence.dao.MtimeFieldTMapper;
+import com.stylefeng.guns.rest.persistence.dao.MtimeHallFilmInfoTMapper;
 import com.stylefeng.guns.rest.persistence.model.cinema.MtimeCinemaT;
-import com.stylefeng.guns.rest.vo.cinema.CinemaVo;
-import com.stylefeng.guns.rest.vo.cinema.MyPageHelper;
+import com.stylefeng.guns.rest.persistence.model.cinema.MtimeFieldT;
+import com.stylefeng.guns.rest.persistence.model.cinema.MtimeHallFilmInfoT;
+import com.stylefeng.guns.rest.vo.cinema.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +34,10 @@ public class MtimeCinemaTServiceImpl extends ServiceImpl<MtimeCinemaTMapper, Mti
 
     @Autowired
     MtimeCinemaTMapper mtimeCinemaTMapper;
+    @Autowired
+    MtimeFieldTMapper mtimeFieldTMapper;
+    @Autowired
+    MtimeHallFilmInfoTMapper mtimeHallFilmInfoTMapper;
 
     @Override
     public Map selectCinemaByBrandIdDistrictIdHallType(String brandId,String districtId,String hallType,int nowPage,int pageSize) {
@@ -65,6 +72,90 @@ public class MtimeCinemaTServiceImpl extends ServiceImpl<MtimeCinemaTMapper, Mti
 
         return map;
 
+    }
+
+    @Override
+    public Map selectFieldsById(String cinemaId) {
+
+        MtimeCinemaT mtimeCinemaT = mtimeCinemaTMapper.selectCinemaByCinemaId(cinemaId);
+        CinemaInfoVo cinemaInfo = new CinemaInfoVo();
+        cinemaInfo.setCinemaId(mtimeCinemaT.getUuid());
+        cinemaInfo.setImgUrl(mtimeCinemaT.getImgAddress());
+        cinemaInfo.setCinemaName(mtimeCinemaT.getCinemaName());
+        cinemaInfo.setCinemaPhone(mtimeCinemaT.getCinemaPhone());
+        cinemaInfo.setCinemaAdress(mtimeCinemaT.getCinemaAddress());
+
+        ArrayList<MtimeFieldT> mtimeFilmFieldList = mtimeFieldTMapper.selectFilmFieldsByCinemaId(cinemaId);
+        ArrayList<MtimeHallFilmInfoT> mtimeHallFilmInfoList = new ArrayList<>();
+        ArrayList<Map<String,Object>> filmList = new ArrayList<>();
+
+        for (MtimeFieldT mtimeFieldT : mtimeFilmFieldList) {
+
+            MtimeHallFilmInfoT mtimeHallFilmInfo = mtimeHallFilmInfoTMapper.selectFilmInfosByFilmId(mtimeFieldT.getFilmId());
+            mtimeHallFilmInfoList.add(mtimeHallFilmInfo);
+
+        }
+
+        for (MtimeHallFilmInfoT filmInfo : mtimeHallFilmInfoList) {
+            FilmInfoVo filmInfoVo = new FilmInfoVo();
+            filmInfoVo.setFilmId(filmInfo.getFilmId());
+            filmInfoVo.setFilmName(filmInfo.getFilmName());
+            filmInfoVo.setFilmLength(filmInfo.getFilmLength());
+            filmInfoVo.setFilmCats(filmInfo.getFilmCats());
+            filmInfoVo.setActor(filmInfo.getActors());
+            filmInfoVo.setImgAddress(filmInfo.getImgAddress());
+
+            /* 0-2D,1-3D,2-3DIMAX,4-无*/
+            if(filmInfo.getFilmType() == null){
+                filmInfoVo.setFilmType("4-无");
+            }else{
+                switch(filmInfo.getFilmType()){
+                    case 0:
+                        filmInfoVo.setFilmType("0-2D");
+                        break;
+                    case 1:
+                        filmInfoVo.setFilmType("1-3D");
+                        break;
+                    case 2:
+                        filmInfoVo.setFilmType("2-3DIMAX");
+                        break;
+                    default:
+                        filmInfoVo.setFilmType("4-无");
+                        break;
+                }
+            }
+
+            int filmId = filmInfoVo.getFilmId();
+            int k = 0;
+            ArrayList<FilmFieldVo> filmFieldVos = new ArrayList<>();
+            for (int i = k; i < mtimeFilmFieldList.size(); i++) {
+                if(filmId == mtimeFilmFieldList.get(i).getFilmId()){
+                    MtimeFieldT remove = mtimeFilmFieldList.remove(i);
+                    FilmFieldVo filmFieldVo = new FilmFieldVo();
+                    filmFieldVo.setFieldId(remove.getUuid());
+                    filmFieldVo.setBeginTime(remove.getBeginTime());
+                    filmFieldVo.setEndTime(remove.getEndTime());
+                    filmFieldVo.setLanguage(filmInfo.getFilmLanguage());
+                    filmFieldVo.setHallName(remove.getHallName());
+                    filmFieldVo.setPrice(remove.getPrice());
+                    filmFieldVos.add(filmFieldVo);
+                }
+            }
+            filmInfoVo.setFilmFields(filmFieldVos);
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("filmInfo",filmInfoVo);
+            filmList.add(hashMap);
+        }
+
+        HashMap<String, Object> map = new HashMap<>();
+        if(cinemaInfo != null){
+            map.put("cinemaInfo",cinemaInfo);
+        }
+        if(!filmList.isEmpty()){
+            map.put("filmList",filmList);
+        }
+
+        return map;
     }
 
 

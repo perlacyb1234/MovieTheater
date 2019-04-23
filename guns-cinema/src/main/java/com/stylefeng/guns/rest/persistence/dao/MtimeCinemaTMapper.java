@@ -17,4 +17,6 @@ import java.util.ArrayList;
 public interface MtimeCinemaTMapper extends BaseMapper<MtimeCinemaT> {
 
     ArrayList<MtimeCinemaT> selectCinemaByBrandId(@Param("brandId") String brandId, @Param("districtId") String districtId);
+
+    MtimeCinemaT selectCinemaByCinemaId(String cinemaId);
 }

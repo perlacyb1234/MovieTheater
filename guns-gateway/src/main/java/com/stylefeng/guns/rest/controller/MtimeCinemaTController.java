@@ -106,5 +106,27 @@ public class MtimeCinemaTController {
 
     }
 
+
+    @RequestMapping("getFields")
+    @ResponseBody
+    public Map getFields(String cinemaId){
+
+        Map data = mtimeCinemaTService.selectFieldsById(cinemaId);
+
+        HashMap<String, Object> map = new HashMap<>();
+
+        if(!data.isEmpty()){
+            map.put("status",0);
+            map.put("imgPre","http://img.meetingshop.cn/");
+            map.put("data",data);
+        }else{
+            map.put("status",1);
+            map.put("msg","影院信息查询失败");
+        }
+
+        return map;
+
+    }
+
 }
 

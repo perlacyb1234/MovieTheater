@@ -14,4 +14,5 @@ import com.stylefeng.guns.rest.persistence.model.cinema.MtimeHallFilmInfoT;
  */
 public interface MtimeHallFilmInfoTMapper extends BaseMapper<MtimeHallFilmInfoT> {
 
+    MtimeHallFilmInfoT selectFilmInfosByFilmId(Integer filmId);
 }

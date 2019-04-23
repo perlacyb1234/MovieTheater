@@ -31,4 +31,10 @@
         </where>
     </select>
 
+    <select id="selectCinemaByCinemaId" resultMap="BaseResultMap">
+        select UUID,cinema_name,cinema_phone,brand_id,area_id,hall_ids,img_address,cinema_address,minimum_price
+        from mtime_cinema_t
+        where UUID = #{cinemaId}
+    </select>
+
 </mapper>

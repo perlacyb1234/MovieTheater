@@ -14,4 +14,10 @@
         <result column="price" property="price" />
     </resultMap>
 
+    <select id="selectFilmFieldsByCinemaId" resultMap="BaseResultMap">
+        select UUID,cinema_id,film_id,begin_time,end_time,hall_id,hall_name,price
+        from mtime_field_t
+        where cinema_id = #{cinemaId}
+    </select>
+
 </mapper>

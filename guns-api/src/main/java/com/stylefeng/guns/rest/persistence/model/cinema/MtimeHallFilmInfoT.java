@@ -61,6 +61,12 @@ public class MtimeHallFilmInfoT extends Model<MtimeHallFilmInfoT> {
     @TableField("img_address")
     private String imgAddress;
 
+    /**
+     * 片源类型
+     */
+    @TableField("film_type")
+    private Integer filmType;
+
 
     public Integer getUuid() {
         return uuid;
@@ -126,6 +132,15 @@ public class MtimeHallFilmInfoT extends Model<MtimeHallFilmInfoT> {
         this.imgAddress = imgAddress;
     }
 
+
+    public Integer getFilmType() {
+        return filmType;
+    }
+
+    public void setFilmType(Integer filmType) {
+        this.filmType = filmType;
+    }
+
     @Override
     protected Serializable pkVal() {
         return this.uuid;
@@ -134,14 +149,15 @@ public class MtimeHallFilmInfoT extends Model<MtimeHallFilmInfoT> {
     @Override
     public String toString() {
         return "MtimeHallFilmInfoT{" +
-        "uuid=" + uuid +
-        ", filmId=" + filmId +
-        ", filmName=" + filmName +
-        ", filmLength=" + filmLength +
-        ", filmCats=" + filmCats +
-        ", filmLanguage=" + filmLanguage +
-        ", actors=" + actors +
-        ", imgAddress=" + imgAddress +
-        "}";
+                "uuid=" + uuid +
+                ", filmId=" + filmId +
+                ", filmName='" + filmName + '\'' +
+                ", filmLength='" + filmLength + '\'' +
+                ", filmCats='" + filmCats + '\'' +
+                ", filmLanguage='" + filmLanguage + '\'' +
+                ", actors='" + actors + '\'' +
+                ", imgAddress='" + imgAddress + '\'' +
+                ", filmType=" + filmType +
+                '}';
     }
 }

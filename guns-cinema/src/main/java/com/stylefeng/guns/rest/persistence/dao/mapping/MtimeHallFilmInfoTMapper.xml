@@ -12,6 +12,17 @@
         <result column="film_language" property="filmLanguage" />
         <result column="actors" property="actors" />
         <result column="img_address" property="imgAddress" />
+        <result column="film_type" property="filmType" />
     </resultMap>
+
+    <select id="selectFilmInfosByFilmId" resultMap="BaseResultMap">
+        select
+	      t1.UUID,t1.film_id,t1.film_name,t1.film_length,t1.film_cats,t1.film_language,t1.actors,t1.img_address,
+	      t2.film_type as film_type
+        from
+	      mtime_hall_film_info_t as t1 left join mtime_film_t as t2 on t1.film_name = t2.film_name
+        where
+	      t1.film_id = #{filmId}
+    </select>
 
 </mapper>
