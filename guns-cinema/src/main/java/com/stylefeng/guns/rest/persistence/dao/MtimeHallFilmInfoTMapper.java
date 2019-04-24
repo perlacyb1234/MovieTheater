@@ -2,8 +2,7 @@ package com.stylefeng.guns.rest.persistence.dao;
 
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.stylefeng.guns.rest.persistence.model.cinema.MtimeFieldT;
-import com.stylefeng.guns.rest.persistence.model.cinema.MtimeHallFilmInfoT;
+import com.stylefeng.guns.rest.persistence.model.MtimeHallFilmInfoT;
 
 /**
  * <p>

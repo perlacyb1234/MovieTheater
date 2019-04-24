@@ -1,9 +1,5 @@
 package com.stylefeng.guns.rest.api;
 
-
-import com.baomidou.mybatisplus.service.IService;
-import com.stylefeng.guns.rest.persistence.model.cinema.MtimeCinemaT;
-
 import java.util.Map;
 
 /**
@@ -14,7 +10,7 @@ import java.util.Map;
  * @author liangzhen
  * @since 2019-04-21
  */
-public interface IMtimeCinemaTService extends IService<MtimeCinemaT> {
+public interface IMtimeCinemaTService{
 
     Map selectCinemaByBrandIdDistrictIdHallType(String brandId, String districtId, String hallType, int nowPage, int pageSize);
 

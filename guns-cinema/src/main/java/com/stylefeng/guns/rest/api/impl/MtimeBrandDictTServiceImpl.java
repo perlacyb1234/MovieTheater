@@ -6,9 +6,10 @@ import com.stylefeng.guns.rest.api.IMtimeBrandDictTService;
 import com.stylefeng.guns.rest.persistence.dao.MtimeAreaDictTMapper;
 import com.stylefeng.guns.rest.persistence.dao.MtimeHallDictTMapper;
 import com.stylefeng.guns.rest.persistence.dao.MtimeBrandDictTMapper;
-import com.stylefeng.guns.rest.persistence.model.cinema.MtimeAreaDictT;
-import com.stylefeng.guns.rest.persistence.model.cinema.MtimeBrandDictT;
-import com.stylefeng.guns.rest.persistence.model.cinema.MtimeHallDictT;
+
+import com.stylefeng.guns.rest.persistence.model.MtimeAreaDictT;
+import com.stylefeng.guns.rest.persistence.model.MtimeBrandDictT;
+import com.stylefeng.guns.rest.persistence.model.MtimeHallDictT;
 import com.stylefeng.guns.rest.vo.cinema.AreaVo;
 import com.stylefeng.guns.rest.vo.cinema.BrandVo;
 import com.stylefeng.guns.rest.vo.cinema.HalltypeVo;

@@ -6,9 +6,10 @@ import com.stylefeng.guns.rest.api.IMtimeCinemaTService;
 import com.stylefeng.guns.rest.persistence.dao.MtimeCinemaTMapper;
 import com.stylefeng.guns.rest.persistence.dao.MtimeFieldTMapper;
 import com.stylefeng.guns.rest.persistence.dao.MtimeHallFilmInfoTMapper;
-import com.stylefeng.guns.rest.persistence.model.cinema.MtimeCinemaT;
-import com.stylefeng.guns.rest.persistence.model.cinema.MtimeFieldT;
-import com.stylefeng.guns.rest.persistence.model.cinema.MtimeHallFilmInfoT;
+
+import com.stylefeng.guns.rest.persistence.model.MtimeCinemaT;
+import com.stylefeng.guns.rest.persistence.model.MtimeFieldT;
+import com.stylefeng.guns.rest.persistence.model.MtimeHallFilmInfoT;
 import com.stylefeng.guns.rest.vo.cinema.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,7 +1,7 @@
 package com.stylefeng.guns.rest.persistence.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.stylefeng.guns.rest.persistence.model.cinema.MtimeCinemaT;
+import com.stylefeng.guns.rest.persistence.model.MtimeCinemaT;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
