@@ -2,6 +2,7 @@ package com.stylefeng.guns.rest.persistence.dao;
 
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.stylefeng.guns.rest.persistence.model.cinema.MtimeFieldT;
 import com.stylefeng.guns.rest.persistence.model.cinema.MtimeHallFilmInfoT;
 
 /**
@@ -13,5 +14,7 @@ import com.stylefeng.guns.rest.persistence.model.cinema.MtimeHallFilmInfoT;
  * @since 2019-04-21
  */
 public interface MtimeHallFilmInfoTMapper extends BaseMapper<MtimeHallFilmInfoT> {
+
+    MtimeHallFilmInfoT selectFilmInfosByFilmId(Integer filmId);
 
 }

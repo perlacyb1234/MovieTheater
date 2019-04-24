@@ -12,6 +12,22 @@
         <result column="hall_id" property="hallId" />
         <result column="hall_name" property="hallName" />
         <result column="price" property="price" />
+        <result column="seat_address" property="seatAddress" />
     </resultMap>
+
+    <select id="selectFilmFieldsByCinemaId" resultMap="BaseResultMap">
+        select UUID,cinema_id,film_id,begin_time,end_time,hall_id,hall_name,price
+        from mtime_field_t
+        where cinema_id = #{cinemaId}
+    </select>
+
+    <select id="selectFilmFieldsByFieldId" resultMap="BaseResultMap">
+        select
+	      t1.UUID,t1.cinema_id,t1.film_id,t1.begin_time,t1.end_time,t1.hall_id,t1.hall_name,t1.price,t2.seat_address as seat_address
+        from
+	      mtime_field_t as t1 left join mtime_hall_dict_t as t2 on t1.hall_id = t2.UUID
+        where
+	      t1.UUID = #{fieldId}
+    </select>
 
 </mapper>
