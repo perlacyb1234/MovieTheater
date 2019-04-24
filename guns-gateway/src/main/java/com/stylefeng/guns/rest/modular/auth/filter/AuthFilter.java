@@ -40,7 +40,13 @@ public class AuthFilter extends OncePerRequestFilter {
             return;
         }
         //此处应增加不需要token验证的url判断
-
+        String[] urlIgnore = jwtProperties.getUrlIgnore();
+        for (String s : urlIgnore) {
+            if (request.getServletPath().startsWith("/" + s)) {
+                chain.doFilter(request, response);
+                return;
+            }
+        }
         final String requestHeader = request.getHeader(jwtProperties.getHeader());
         String authToken = null;
         if (requestHeader != null && requestHeader.startsWith("Bearer ")) {

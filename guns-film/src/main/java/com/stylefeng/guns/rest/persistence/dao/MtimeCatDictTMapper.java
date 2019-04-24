@@ -1,6 +1,6 @@
 package com.stylefeng.guns.rest.persistence.dao;
 
-import com.stylefeng.guns.rest.persistence.model.film.MtimeCatDictT;
+import com.stylefeng.guns.rest.persistence.model.MtimeCatDictT;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
