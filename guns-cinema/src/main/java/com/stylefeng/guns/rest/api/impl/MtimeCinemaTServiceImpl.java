@@ -48,12 +48,9 @@ public class MtimeCinemaTServiceImpl extends ServiceImpl<MtimeCinemaTMapper, Mti
         ArrayList<MtimeCinemaT> mtimeCinemaTS = mtimeCinemaTMapper.selectCinemaByBrandIdDistrictIdHallType(brandId,districtId,hallType);
         ArrayList<CinemaVo> cinemaList = new ArrayList<>();
         for (MtimeCinemaT mtimeCinemaT : mtimeCinemaTS) {
+            // 通过getCinemaVo方法将MtimeCinemaT(mtime_cinema_t)中报文所需的部分内容抽取出来封装到封装类CinemaVo中
+            CinemaVo cinemaVo = getCinemaVo(mtimeCinemaT);
 
-            CinemaVo cinemaVo = new CinemaVo();
-            cinemaVo.setUuid(mtimeCinemaT.getUuid());
-            cinemaVo.setCinemaName(mtimeCinemaT.getCinemaName());
-            cinemaVo.setAddress(mtimeCinemaT.getCinemaAddress());
-            cinemaVo.setMinimumPrice(mtimeCinemaT.getMinimumPrice());
             cinemaList.add(cinemaVo);
 
         }
@@ -115,6 +112,58 @@ public class MtimeCinemaTServiceImpl extends ServiceImpl<MtimeCinemaTMapper, Mti
         }
 
         return map;
+    }
+
+    @Override
+    public Map selectFieldByCinemaIdAndFieldId(String cinemaId, String fieldId) {
+
+        HashMap<String, Object> map = new HashMap<>();
+        MtimeCinemaT mtimeCinemaT = mtimeCinemaTMapper.selectCinemaByCinemaId(cinemaId);
+
+        if(mtimeCinemaT != null){
+
+            CinemaInfoVo cinemaInfo = getCinemaInfoVo(mtimeCinemaT);
+
+            map.put("cinemaInfo",cinemaInfo);
+        }
+
+        MtimeFieldT mtimeFieldT = mtimeFieldTMapper.selectFilmFieldsByFieldId(fieldId);
+        MtimeHallFilmInfoT mtimeHallFilmInfo = null;
+        if(mtimeFieldT != null){
+            mtimeHallFilmInfo = mtimeHallFilmInfoTMapper.selectFilmInfosByFilmId(mtimeFieldT.getFilmId());
+
+            HallInfoVo hallInfoVo = new HallInfoVo();
+            hallInfoVo.setHallFieldId(mtimeFieldT.getHallId());
+            hallInfoVo.setHallName(mtimeFieldT.getHallName());
+            hallInfoVo.setPrice(mtimeFieldT.getPrice());
+            hallInfoVo.setSeatFile(mtimeFieldT.getSeatAddress());
+            hallInfoVo.setSoldSeats("1,2,3,5,12");
+            map.put("hallInfo",hallInfoVo);
+        }
+
+        // 封装不带field list的filmInfoVo
+        if(mtimeHallFilmInfo != null){
+
+            FilmInfoNoFieldVo filmInfoVo = getFilmInfoNoFieldVoFromMtimeHallFilmInfoT(mtimeHallFilmInfo);
+
+            map.put("filmInfo",filmInfoVo);
+        }
+
+
+
+        return map;
+    }
+
+    private CinemaVo getCinemaVo(MtimeCinemaT mtimeCinemaT) {
+
+        CinemaVo cinemaVo = new CinemaVo();
+        cinemaVo.setUuid(mtimeCinemaT.getUuid());
+        cinemaVo.setCinemaName(mtimeCinemaT.getCinemaName());
+        cinemaVo.setAddress(mtimeCinemaT.getCinemaAddress());
+        cinemaVo.setMinimumPrice(mtimeCinemaT.getMinimumPrice());
+
+        return cinemaVo;
+
     }
 
     private FilmInfoVo getFilmInFoVoFromMtimeHallFilmInfoT(MtimeHallFilmInfoT filmInfo, ArrayList<MtimeFieldT> mtimeFilmFieldList) {
@@ -190,51 +239,18 @@ public class MtimeCinemaTServiceImpl extends ServiceImpl<MtimeCinemaTMapper, Mti
 
     }
 
-    @Override
-    public Map selectFieldByCinemaIdAndFieldId(String cinemaId, String fieldId) {
-
-        HashMap<String, Object> map = new HashMap<>();
-        MtimeCinemaT mtimeCinemaT = mtimeCinemaTMapper.selectCinemaByCinemaId(cinemaId);
-
-        if(mtimeCinemaT != null){
-
-            CinemaInfoVo cinemaInfo = getCinemaInfoVo(mtimeCinemaT);
-
-            map.put("cinemaInfo",cinemaInfo);
-        }
-
-        MtimeFieldT mtimeFieldT = mtimeFieldTMapper.selectFilmFieldsByFieldId(fieldId);
-        MtimeHallFilmInfoT mtimeHallFilmInfo = null;
-        if(mtimeFieldT != null){
-            mtimeHallFilmInfo = mtimeHallFilmInfoTMapper.selectFilmInfosByFilmId(mtimeFieldT.getFilmId());
-
-            HallInfoVo hallInfoVo = new HallInfoVo();
-            hallInfoVo.setHallFieldId(mtimeFieldT.getHallId());
-            hallInfoVo.setHallName(mtimeFieldT.getHallName());
-            hallInfoVo.setPrice(mtimeFieldT.getPrice());
-            hallInfoVo.setSeatFile(mtimeFieldT.getSeatAddress());
-            hallInfoVo.setSoldSeats("1,2,3,5,12");
-            map.put("hallInfo",hallInfoVo);
-        }
+    private FilmInfoNoFieldVo getFilmInfoNoFieldVoFromMtimeHallFilmInfoT(MtimeHallFilmInfoT mtimeHallFilmInfo) {
 
         FilmInfoNoFieldVo filmInfoVo = new FilmInfoNoFieldVo();
-        if(mtimeHallFilmInfo != null){
+        filmInfoVo.setFilmId(mtimeHallFilmInfo.getFilmId());
+        filmInfoVo.setFilmName(mtimeHallFilmInfo.getFilmName());
+        filmInfoVo.setFilmLength(mtimeHallFilmInfo.getFilmLength());
+        filmInfoVo.setFilmCats(mtimeHallFilmInfo.getFilmCats());
+        filmInfoVo.setImgAddress(mtimeHallFilmInfo.getImgAddress());
 
-            filmInfoVo.setFilmId(mtimeHallFilmInfo.getFilmId());
-            filmInfoVo.setFilmName(mtimeHallFilmInfo.getFilmName());
-            filmInfoVo.setFilmLength(mtimeHallFilmInfo.getFilmLength());
-            filmInfoVo.setFilmCats(mtimeHallFilmInfo.getFilmCats());
-            filmInfoVo.setImgAddress(mtimeHallFilmInfo.getImgAddress());
-
-            /* 0-2D,1-3D,2-3DIMAX,4-无*/
-            filmInfoVo.setFilmType(filmTypeConvertIntToString(mtimeHallFilmInfo.getFilmType()));
-
-            map.put("filmInfo",filmInfoVo);
-        }
-
-
-
-        return map;
+        /* 0-2D,1-3D,2-3DIMAX,4-无*/
+        filmInfoVo.setFilmType(filmTypeConvertIntToString(mtimeHallFilmInfo.getFilmType()));
+        return filmInfoVo;
     }
 
 
