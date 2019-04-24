@@ -44,13 +44,10 @@ public class MtimeCinemaTServiceImpl extends ServiceImpl<MtimeCinemaTMapper, Mti
 
         HashMap<String, Object> map = new HashMap<>();
 
-        ArrayList<MtimeCinemaT> mtimeCinemaTS = mtimeCinemaTMapper.selectCinemaByBrandId(brandId,districtId);
+        ArrayList<MtimeCinemaT> mtimeCinemaTS = mtimeCinemaTMapper.selectCinemaByBrandIdDistrictIdHallType(brandId,districtId,hallType);
         ArrayList<CinemaVo> cinemaList = new ArrayList<>();
         for (MtimeCinemaT mtimeCinemaT : mtimeCinemaTS) {
-            String hallIds = mtimeCinemaT.getHallIds();
-            if(hallType != null && hallType != "" && !hallIds.contains(hallType)){
-                continue;
-            }
+
             CinemaVo cinemaVo = new CinemaVo();
             cinemaVo.setUuid(mtimeCinemaT.getUuid());
             cinemaVo.setCinemaName(mtimeCinemaT.getCinemaName());

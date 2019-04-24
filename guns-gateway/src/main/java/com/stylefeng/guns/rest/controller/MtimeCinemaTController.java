@@ -6,6 +6,8 @@ import com.stylefeng.guns.rest.api.IMtimeBrandDictTService;
 import com.stylefeng.guns.rest.api.IMtimeCinemaTService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
@@ -28,38 +30,20 @@ public class MtimeCinemaTController {
     @Reference
     IMtimeBrandDictTService mtimeBrandDictTService;
 
-    @RequestMapping("getCinemas")
+    @RequestMapping(value = "getCinemas",method = RequestMethod.GET)
     @ResponseBody
-    public Map getCinemas(String brandId, String districtId, String hallType, String nowPage, String pageSize){
+    public Map getCinemas(@RequestParam(name = "brandId",defaultValue = "99") String brandId,
+                          @RequestParam(name = "districtId",defaultValue = "99") String districtId,
+                          @RequestParam(name = "hallType",defaultValue = "99") String hallType,
+                          @RequestParam(name = "nowPage",defaultValue = "1") String nowPage,
+                          @RequestParam(name = "pageSize",defaultValue = "12") String pageSize){
 
         Map<String, Object> map = new HashMap<>();
 
-        if(brandId == null || brandId == ""){
-            brandId = "99";
-        }
-        if(districtId == null || districtId == ""){
-            districtId = "99";
-        }
-        if(hallType == null || hallType == ""){
-            hallType = "99";
-        }
-
-        int now_page = 0;
-        int page_size = 0;
-        if(nowPage == null || nowPage == ""){
-            now_page = 1;
-        }else{
-            now_page = Integer.parseInt(nowPage);
-        }
-        if(pageSize == null || pageSize == ""){
-            page_size = 12;
-        }else {
-            page_size = Integer.parseInt(pageSize);
-        }
+        int now_page = Integer.parseInt(nowPage);
+        int page_size = Integer.parseInt(pageSize);
 
         map = mtimeCinemaTService.selectCinemaByBrandIdDistrictIdHallType(brandId,districtId,hallType,now_page,page_size);
-
-       // ArrayList cinemaList = (ArrayList) cinemas.get("cinemas");
 
         if(map == null || map.isEmpty()){
 
