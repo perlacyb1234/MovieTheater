@@ -83,7 +83,7 @@ public class MtimeCinemaTController {
     }
 
 
-    @RequestMapping("getFields")
+    @RequestMapping(value = "getFields",method = {RequestMethod.POST,RequestMethod.GET})
     @ResponseBody
     public Map getFields(String cinemaId){
         HashMap<String, Object> map = new HashMap<>();
@@ -95,13 +95,16 @@ public class MtimeCinemaTController {
         }
         Map data = mtimeCinemaTService.selectFieldsById(cinemaId);
 
-        if(!data.isEmpty()){
+        if(data.isEmpty()){
+
+            map.put("status",1);
+            map.put("msg","影院信息查询失败");
+
+        }else{
+
             map.put("status",0);
             map.put("imgPre","http://img.meetingshop.cn/");
             map.put("data",data);
-        }else{
-            map.put("status",1);
-            map.put("msg","影院信息查询失败");
         }
 
         return map;
@@ -109,7 +112,7 @@ public class MtimeCinemaTController {
     }
 
 
-    @RequestMapping("getFieldInfo")
+    @RequestMapping(value = "getFieldInfo",method = RequestMethod.POST)
     @ResponseBody
     public Map getFieldInfo(String cinemaId,String fieldId){
 
