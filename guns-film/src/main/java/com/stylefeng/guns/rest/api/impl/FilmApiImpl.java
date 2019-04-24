@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.stylefeng.guns.rest.api.FilmApi;
 import com.stylefeng.guns.rest.persistence.dao.*;
-import com.stylefeng.guns.rest.persistence.model.film.*;
+import com.stylefeng.guns.rest.persistence.model.*;
 import com.stylefeng.guns.rest.util.convert.DateConvert;
 import com.stylefeng.guns.rest.vo.film.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,9 +94,17 @@ public class FilmApiImpl implements FilmApi {
         //1表示按名字查找，通过名字找到id，统一使用id
         if ("1".equals(searchType)) {
             MtimeFilmT mtimeFilmT = filmMapper.selectByName(searchValue);
+            //查无影片
+            if (mtimeFilmT == null){
+                return null;
+            }
             searchValue = String.valueOf(mtimeFilmT.getUuid());
         }
         MtimeFilmT filmT = filmMapper.selectById(searchValue);
+        //查无影片
+        if (filmT == null){
+            return null;
+        }
         MtimeFilmInfoT filmInfo = filmInfoMapper.selectById(searchValue);
 
         //获取到所有需要的信息，下面进行封装
