@@ -2,6 +2,7 @@ package com.stylefeng.guns.rest.api.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.stylefeng.guns.core.util.MD5Util;
 import com.stylefeng.guns.rest.api.UserApi;
 import com.stylefeng.guns.rest.persistence.dao.MtimeUserTMapper;
 import com.stylefeng.guns.rest.persistence.model.MtimeUserT;
@@ -39,7 +40,8 @@ public class UserApiImpl implements UserApi {
         //暂存密码明文，缺少加盐加密算法
         MtimeUserT userT = new MtimeUserT();
         userT.setUserName(username);
-        userT.setUserPwd(password);
+        String pwd = MD5Util.encrypt(password);
+        userT.setUserPwd(pwd);
         userT.setEmail(email);
         userT.setUserPhone(phone);
         userT.setAddress(address);
@@ -51,7 +53,8 @@ public class UserApiImpl implements UserApi {
     public String login(String username, String password) {
         MtimeUserT userT = new MtimeUserT();
         userT.setUserName(username);
-        userT.setUserPwd(password);
+        String pwd = MD5Util.encrypt(password);
+        userT.setUserPwd(pwd);
         MtimeUserT mtimeUserT = userMapper.selectOne(userT);
         if (mtimeUserT != null){
             return username;

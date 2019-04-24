@@ -93,6 +93,7 @@ public class UserController {
             responseVo.setMsg("用户名或密码错误");
             return responseVo;
         }
+        //生成token
         String randomKey = jwtTokenUtil.getRandomKey();
         String token = jwtTokenUtil.generateToken(username, randomKey);
         AuthVo authVo = new AuthVo(randomKey, token);
@@ -105,12 +106,12 @@ public class UserController {
     //authToken在请求header中，怎么获取
     public ResponseVo logout(HttpServletRequest request) {
         ResponseVo responseVo = new ResponseVo();
-        Boolean tokenExpired = null;
         boolean exist = false;
         try {
-            String authToken = request.getHeader("Authorization");
+            String header = request.getHeader("Authorization");
+            String authToken = header.substring(7);
             String username = jwtTokenUtil.getUsernameFromToken(authToken);
-            tokenExpired = jwtTokenUtil.isTokenExpired(authToken);
+            //目前只验证usernameFromToken是否存在数据库
             exist = userApi.isUsernameExist(username);
         } catch (Exception e) {
             responseVo.setStatus(999);
@@ -118,7 +119,7 @@ public class UserController {
             return responseVo;
         }
 
-        if (!tokenExpired && exist) {
+        if (exist) {
             responseVo.setStatus(0);
             responseVo.setData(new AuthVo());
             responseVo.setMsg("成功退出");
@@ -131,20 +132,19 @@ public class UserController {
     @RequestMapping(value = "user/getUserInfo",method = RequestMethod.GET)
     public ResponseVo getUserInfo(HttpServletRequest request){
         ResponseVo responseVo = new ResponseVo();
-        Boolean tokenExpired = null;
         String username = null;
         boolean exist = false;
         try {
-            String authToken = request.getHeader("Authorization");
-            tokenExpired = jwtTokenUtil.isTokenExpired(authToken);
+            String header = request.getHeader("Authorization");
+            String authToken = header.substring(7);
             username = jwtTokenUtil.getUsernameFromToken(authToken);
             exist = userApi.isUsernameExist(username);
         } catch (Exception e) {
-            responseVo.setStatus(99);
+            responseVo.setStatus(999);
             responseVo.setMsg("系统出现异常，请联系管理员");
             return responseVo;
         }
-        if (tokenExpired || username == null || !exist){
+        if (username == null || !exist){
             responseVo.setStatus(1);
             responseVo.setMsg("查询失败，用户尚未登录");
             return responseVo;
@@ -156,12 +156,17 @@ public class UserController {
     }
 
     @RequestMapping(value = "user/updateUserInfo",method = RequestMethod.POST)
-    public ResponseVo updateUserInfo(@RequestParam int uuid,String nickname,
+    public ResponseVo updateUserInfo(HttpServletRequest request,@RequestParam int uuid,String nickname,
                                      String email,String phone,String sex, String birthday,String lifeState,
                                      String biography,String address){
         ResponseVo responseVo = new ResponseVo();
         UserVo userVo = null;
+        String username = null;
+        boolean exist = false;
         try {
+            String authToken = request.getHeader("Authorization");
+            username = jwtTokenUtil.getUsernameFromToken(authToken);
+            exist = userApi.isUsernameExist(username);
             userVo = userApi.updateUserById(uuid,nickname,email,phone,sex,birthday,lifeState,biography,address);
         } catch (Exception e) {
             responseVo.setStatus(999);

@@ -36,7 +36,7 @@ spring:
     application:
       name: dubbo-cinema-server
     protocol:
-      port: 20881     #每个模块需要配置不同端口
+      port: 20883     #每个模块需要配置不同端口
       name: dubbo
       status: server
     registry:
