@@ -60,19 +60,11 @@ public class MtimeCinemaTController {
 
     }
 
-    @RequestMapping("getCondition")
+    @RequestMapping(value = "getCondition",method = RequestMethod.GET)
     @ResponseBody
-    public Map getCondition(String brandId, String hallType, String areaId){
-
-        if(brandId == null || brandId == ""){
-            brandId = "99";
-        }
-        if(hallType == null || hallType == ""){
-            hallType = "99";
-        }
-        if(areaId == null || areaId == ""){
-            areaId = "99";
-        }
+    public Map getCondition(@RequestParam(name = "brandId",defaultValue = "99") String brandId,
+                            @RequestParam(name = "hallType",defaultValue = "99") String hallType,
+                            @RequestParam(name = "areaId",defaultValue = "99") String areaId){
 
         HashMap<String, Object> map = new HashMap<>();
 
