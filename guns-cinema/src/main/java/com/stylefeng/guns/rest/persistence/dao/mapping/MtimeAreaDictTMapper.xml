@@ -11,7 +11,7 @@
     <select id="selectAreasByAreaId" resultMap="BaseResultMap">
         select UUID,show_name from mtime_area_dict_t
         <where>
-            <if test="areaId != null and areaId != ''">
+            <if test="areaId != '99'">
               UUID = #{areaId}
             </if>
         </where>

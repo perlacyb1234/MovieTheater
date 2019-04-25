@@ -11,7 +11,7 @@
     <select id="selectBrandsByBrandId" resultMap="BaseResultMap">
         select UUID,show_name from mtime_brand_dict_t
         <where>
-            <if test="brandId != null and brandId != ''">
+            <if test="brandId != '99'">
                 UUID = #{brandId}
             </if>
         </where>

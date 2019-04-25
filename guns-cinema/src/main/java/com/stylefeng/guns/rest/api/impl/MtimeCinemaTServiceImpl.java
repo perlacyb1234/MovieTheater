@@ -59,8 +59,9 @@ public class MtimeCinemaTServiceImpl extends ServiceImpl<MtimeCinemaTMapper, Mti
         int totalPage = (int) Math.ceil(1.0 * totalNum / pageSize );
         List subList = MyPageHelper.subList(nowPage, pageSize, cinemaList);
         if(!subList.isEmpty()){
-            hashMap.put("cinemas",subList);
-            map.put("data",hashMap);
+            //hashMap.put("cinemas",subList);
+            //map.put("data",hashMap);
+            map.put("data",subList);
             map.put("totalPage",totalPage);
             map.put("nowPage",nowPage);
         }

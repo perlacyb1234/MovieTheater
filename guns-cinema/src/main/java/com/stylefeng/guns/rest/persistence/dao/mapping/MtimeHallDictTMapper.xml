@@ -12,7 +12,7 @@
     <select id="selecthallsByhallType" resultMap="BaseResultMap">
         select UUID,show_name,seat_address from mtime_hall_dict_t
         <where>
-            <if test="hallType != null and hallType != ''">
+            <if test="hallType != '99'">
                 UUID = #{hallType}
             </if>
         </where>

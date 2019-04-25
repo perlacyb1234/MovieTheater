@@ -49,10 +49,10 @@ public class MtimeBrandDictTServiceImpl extends ServiceImpl<MtimeBrandDictTMappe
             BrandVo brandVo = new BrandVo();
             brandVo.setBrandId(brand.getUuid());
             brandVo.setBrandName(brand.getShowName());
-            if("99".equals(brandId)){
-                brandVo.setActive(false);
-            }else{
+            if(99 == brandVo.getBrandId()){
                 brandVo.setActive(true);
+            }else{
+                brandVo.setActive(false);
             }
             brandList.add(brandVo);
         }
@@ -64,10 +64,10 @@ public class MtimeBrandDictTServiceImpl extends ServiceImpl<MtimeBrandDictTMappe
             AreaVo areaVo = new AreaVo();
             areaVo.setAreaId(area.getUuid());
             areaVo.setAreaName(area.getShowName());
-            if("99".equals(areaId)){
-                areaVo.setActive(false);
-            }else{
+            if(99 == areaVo.getAreaId()){
                 areaVo.setActive(true);
+            }else{
+                areaVo.setActive(false);
             }
             areaList.add(areaVo);
         }
@@ -79,10 +79,10 @@ public class MtimeBrandDictTServiceImpl extends ServiceImpl<MtimeBrandDictTMappe
             HalltypeVo halltypeVo = new HalltypeVo();
             halltypeVo.setHalltypeId(halltype.getUuid());
             halltypeVo.setHalltypeName(halltype.getShowName());
-            if("99".equals(hallType)){
-                halltypeVo.setActive(false);
-            }else{
+            if(99 == halltypeVo.getHalltypeId()){
                 halltypeVo.setActive(true);
+            }else{
+                halltypeVo.setActive(false);
             }
             halltypeList.add(halltypeVo);
         }
