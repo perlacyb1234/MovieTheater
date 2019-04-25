@@ -47,7 +47,14 @@ public class OrderController {
             responseVo.setMsg("该订单不存在");
             return responseVo;
         }
-        OrderVo orderVo = orderApi.placeOrder(fieldId, soldSeats, seatsName, username);
+        OrderVo orderVo = null;
+        try {
+            orderVo = orderApi.placeOrder(fieldId, soldSeats,  username);
+        } catch (IOException e) {
+            responseVo.setStatus(1);
+            responseVo.setMsg("下单失败");
+            return responseVo;
+        }
         if (orderVo != null) {
             responseVo.setStatus(0);
             responseVo.setMsg("");

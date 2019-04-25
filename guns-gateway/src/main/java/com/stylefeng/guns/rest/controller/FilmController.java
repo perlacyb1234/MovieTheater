@@ -149,7 +149,7 @@ public class FilmController {
             responseVo.setMsg("查询失败，无影片可加载");
             return responseVo;
         }
-        ResponseVo responseVo = new ResponseVo(0, "http://img.meetingshop.cn/", filmDetail);
+        ResponseVo responseVo = new ResponseVo(0, "localhost:8080/", filmDetail);
         return responseVo;
     }
 }

@@ -2,6 +2,7 @@ package com.stylefeng.guns.rest.api;
 
 import com.stylefeng.guns.rest.vo.order.OrderVo;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public interface OrderApi {
     boolean isTrueSeats(int fieldId, int[] soldSeats, String seatsName) throws IOException;
     boolean isSeatsOnSaling(int[] soldSeats, int fieldId);
 
-    OrderVo placeOrder(int fieldId, int[] soldSeats, String seatsName, String username);
+    OrderVo placeOrder(int fieldId, int[] soldSeats, String username) throws IOException;
 
     List<OrderVo> getOrderInfoByUsername(String username, int nowPage, int pageSize);
 }
