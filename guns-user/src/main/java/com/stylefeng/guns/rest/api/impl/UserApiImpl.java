@@ -37,7 +37,7 @@ public class UserApiImpl implements UserApi {
 
     @Override
     public boolean addUser(String username, String password, String email, String phone, String address) {
-        //暂存密码明文，缺少加盐加密算法
+        //暂存用MD5加密，缺少加盐算法
         MtimeUserT userT = new MtimeUserT();
         userT.setUserName(username);
         String pwd = MD5Util.encrypt(password);

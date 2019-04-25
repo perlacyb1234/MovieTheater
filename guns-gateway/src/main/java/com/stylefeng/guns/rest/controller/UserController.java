@@ -164,7 +164,8 @@ public class UserController {
         String username = null;
         boolean exist = false;
         try {
-            String authToken = request.getHeader("Authorization");
+            String header = request.getHeader("Authorization");
+            String authToken = header.substring(7);
             username = jwtTokenUtil.getUsernameFromToken(authToken);
             exist = userApi.isUsernameExist(username);
             userVo = userApi.updateUserById(uuid,nickname,email,phone,sex,birthday,lifeState,biography,address);
