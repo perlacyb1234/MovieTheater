@@ -42,8 +42,12 @@ public class MtimeCinemaTController {
 
         int now_page = Integer.parseInt(nowPage);
         int page_size = Integer.parseInt(pageSize);
-
-        map = mtimeCinemaTService.selectCinemaByBrandIdDistrictIdHallType(brandId,districtId,hallType,now_page,page_size);
+        try{
+            map = mtimeCinemaTService.selectCinemaByBrandIdDistrictIdHallType(brandId,districtId,hallType,now_page,page_size);
+        }catch (Exception e){
+            map.put("status",999);
+            map.put("msg","系统出现异常，请联系管理员");
+        }
 
         if(map == null || map.isEmpty()){
 
@@ -68,7 +72,14 @@ public class MtimeCinemaTController {
 
         HashMap<String, Object> map = new HashMap<>();
 
-        Map data = mtimeBrandDictTService.selectBrandsByBrandIdHallTypeAreaId(brandId,hallType,areaId);
+        Map data = null;
+        try{
+            data = mtimeBrandDictTService.selectBrandsByBrandIdHallTypeAreaId(brandId,hallType,areaId);
+        }
+        catch (Exception e){
+            map.put("status",999);
+            map.put("msg","系统出现异常，请联系管理员");
+        }
 
         if(data.size() == 0){
             map.put("status",1);
@@ -93,7 +104,14 @@ public class MtimeCinemaTController {
             map.put("msg","系统出现异常，请联系管理员");
             return map;
         }
-        Map data = mtimeCinemaTService.selectFieldsById(cinemaId);
+        Map data = null;
+        try{
+            data  =  mtimeCinemaTService.selectFieldsById(cinemaId);
+        }catch (Exception e){
+            map.put("status",999);
+            map.put("msg","系统出现异常，请联系管理员");
+        }
+
 
         if(data.isEmpty()){
 
