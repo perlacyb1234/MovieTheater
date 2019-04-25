@@ -3,7 +3,7 @@
 <mapper namespace="com.stylefeng.guns.rest.persistence.dao.MtimeCinemaTMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.stylefeng.guns.rest.persistence.model.cinema.MtimeCinemaT">
+    <resultMap id="BaseResultMap" type="com.stylefeng.guns.rest.persistence.model.MtimeCinemaT">
         <id column="UUID" property="uuid" />
         <result column="cinema_name" property="cinemaName" />
         <result column="cinema_phone" property="cinemaPhone" />
@@ -19,13 +19,13 @@
         select UUID,cinema_name,cinema_phone,brand_id,area_id,hall_ids,img_address,cinema_address,minimum_price
         from mtime_cinema_t
         <where>
-            <if test="brandId != null and brandId != ''">
+            <if test="brandId != '99'">
                 brand_id = #{brandId}
             </if>
-            <if test="districtId != null and districtId != ''">
+            <if test="districtId != '99'">
             and  area_id = #{districtId}
             </if>
-            <if test="hallType != null and hallType != ''">
+            <if test="hallType != '99'">
             and  hall_ids like '%${hallType}%'
             </if>
         </where>

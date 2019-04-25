@@ -1,4 +1,4 @@
-package com.stylefeng.guns.rest.persistence.model.cinema;
+package com.stylefeng.guns.rest.persistence.model;
 
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
@@ -10,14 +10,14 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 地域信息表
+ * 品牌信息表
  * </p>
  *
  * @author liangzhen
  * @since 2019-04-21
  */
-@TableName("mtime_hall_dict_t")
-public class MtimeHallDictT extends Model<MtimeHallDictT> {
+@TableName("mtime_brand_dict_t")
+public class MtimeBrandDictT extends Model<MtimeBrandDictT> {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,11 +31,6 @@ public class MtimeHallDictT extends Model<MtimeHallDictT> {
      */
     @TableField("show_name")
     private String showName;
-    /**
-     * 座位文件存放地址
-     */
-    @TableField("seat_address")
-    private String seatAddress;
 
 
     public Integer getUuid() {
@@ -54,14 +49,6 @@ public class MtimeHallDictT extends Model<MtimeHallDictT> {
         this.showName = showName;
     }
 
-    public String getSeatAddress() {
-        return seatAddress;
-    }
-
-    public void setSeatAddress(String seatAddress) {
-        this.seatAddress = seatAddress;
-    }
-
     @Override
     protected Serializable pkVal() {
         return this.uuid;
@@ -69,10 +56,9 @@ public class MtimeHallDictT extends Model<MtimeHallDictT> {
 
     @Override
     public String toString() {
-        return "MtimeHallDictT{" +
+        return "MtimeBrandDictT{" +
         "uuid=" + uuid +
         ", showName=" + showName +
-        ", seatAddress=" + seatAddress +
         "}";
     }
 }

@@ -6,9 +6,10 @@ import com.stylefeng.guns.rest.api.IMtimeBrandDictTService;
 import com.stylefeng.guns.rest.persistence.dao.MtimeAreaDictTMapper;
 import com.stylefeng.guns.rest.persistence.dao.MtimeHallDictTMapper;
 import com.stylefeng.guns.rest.persistence.dao.MtimeBrandDictTMapper;
-import com.stylefeng.guns.rest.persistence.model.cinema.MtimeAreaDictT;
-import com.stylefeng.guns.rest.persistence.model.cinema.MtimeBrandDictT;
-import com.stylefeng.guns.rest.persistence.model.cinema.MtimeHallDictT;
+
+import com.stylefeng.guns.rest.persistence.model.MtimeAreaDictT;
+import com.stylefeng.guns.rest.persistence.model.MtimeBrandDictT;
+import com.stylefeng.guns.rest.persistence.model.MtimeHallDictT;
 import com.stylefeng.guns.rest.vo.cinema.AreaVo;
 import com.stylefeng.guns.rest.vo.cinema.BrandVo;
 import com.stylefeng.guns.rest.vo.cinema.HalltypeVo;
@@ -48,10 +49,10 @@ public class MtimeBrandDictTServiceImpl extends ServiceImpl<MtimeBrandDictTMappe
             BrandVo brandVo = new BrandVo();
             brandVo.setBrandId(brand.getUuid());
             brandVo.setBrandName(brand.getShowName());
-            if("99".equals(brandId)){
-                brandVo.setActive(false);
-            }else{
+            if(99 == brandVo.getBrandId()){
                 brandVo.setActive(true);
+            }else{
+                brandVo.setActive(false);
             }
             brandList.add(brandVo);
         }
@@ -63,10 +64,10 @@ public class MtimeBrandDictTServiceImpl extends ServiceImpl<MtimeBrandDictTMappe
             AreaVo areaVo = new AreaVo();
             areaVo.setAreaId(area.getUuid());
             areaVo.setAreaName(area.getShowName());
-            if("99".equals(areaId)){
-                areaVo.setActive(false);
-            }else{
+            if(99 == areaVo.getAreaId()){
                 areaVo.setActive(true);
+            }else{
+                areaVo.setActive(false);
             }
             areaList.add(areaVo);
         }
@@ -78,10 +79,10 @@ public class MtimeBrandDictTServiceImpl extends ServiceImpl<MtimeBrandDictTMappe
             HalltypeVo halltypeVo = new HalltypeVo();
             halltypeVo.setHalltypeId(halltype.getUuid());
             halltypeVo.setHalltypeName(halltype.getShowName());
-            if("99".equals(hallType)){
-                halltypeVo.setActive(false);
-            }else{
+            if(99 == halltypeVo.getHalltypeId()){
                 halltypeVo.setActive(true);
+            }else{
+                halltypeVo.setActive(false);
             }
             halltypeList.add(halltypeVo);
         }

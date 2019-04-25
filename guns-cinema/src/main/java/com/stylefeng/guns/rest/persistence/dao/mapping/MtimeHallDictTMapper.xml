@@ -3,7 +3,7 @@
 <mapper namespace="com.stylefeng.guns.rest.persistence.dao.MtimeHallDictTMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.stylefeng.guns.rest.persistence.model.cinema.MtimeHallDictT">
+    <resultMap id="BaseResultMap" type="com.stylefeng.guns.rest.persistence.model.MtimeHallDictT">
         <id column="UUID" property="uuid" />
         <result column="show_name" property="showName" />
         <result column="seat_address" property="seatAddress" />
@@ -12,7 +12,7 @@
     <select id="selecthallsByhallType" resultMap="BaseResultMap">
         select UUID,show_name,seat_address from mtime_hall_dict_t
         <where>
-            <if test="hallType != null and hallType != ''">
+            <if test="hallType != '99'">
                 UUID = #{hallType}
             </if>
         </where>

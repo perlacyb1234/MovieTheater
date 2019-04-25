@@ -3,7 +3,7 @@
 <mapper namespace="com.stylefeng.guns.rest.persistence.dao.MtimeBrandDictTMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.stylefeng.guns.rest.persistence.model.cinema.MtimeBrandDictT">
+    <resultMap id="BaseResultMap" type="com.stylefeng.guns.rest.persistence.model.MtimeBrandDictT">
         <id column="UUID" property="uuid" />
         <result column="show_name" property="showName" />
     </resultMap>
@@ -11,7 +11,7 @@
     <select id="selectBrandsByBrandId" resultMap="BaseResultMap">
         select UUID,show_name from mtime_brand_dict_t
         <where>
-            <if test="brandId != null and brandId != ''">
+            <if test="brandId != '99'">
                 UUID = #{brandId}
             </if>
         </where>
