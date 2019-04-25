@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -43,8 +44,9 @@ public class OrderApiImpl implements OrderApi {
     @Autowired
     MtimeCinemaTMapper cinemaMapper;
 
+
     @Override
-    public OrderVo placeOrder(int fieldId, int[] soldSeats, String seatsName, String username) {
+    public OrderVo placeOrder(int fieldId, int[] soldSeats, String username) throws IOException {
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         MtimeFieldT fieldT = fieldMapper.selectById(fieldId);
         Integer cinemaId = fieldT.getCinemaId();
@@ -63,77 +65,7 @@ public class OrderApiImpl implements OrderApi {
         MtimeUserT userT = new MtimeUserT();
         userT.setUserName(username);
         MtimeUserT userT1 = userMapper.selectOne(userT);
-        //封装Po
-        MtimeOrderT orderT = new MtimeOrderT();
-        orderT.setUuid(uuid);
-        orderT.setCinemaId(cinemaId);
-        orderT.setFieldId(fieldId);
-        orderT.setFilmId(filmId);
-        orderT.setSeatsIds(sb.toString());
-        orderT.setSeatsName(seatsName);
-        orderT.setFilmPrice(Double.valueOf(filmPrice));
-        orderT.setOrderPrice(Double.valueOf(orderPrice));
-        orderT.setOrderTime(orderTime);
-        orderT.setOrderUser(userT1.getUuid());
-        orderT.setOrderStatus(0);
-        int insert = orderMapper.insert(orderT);
-        if (insert == 1) {
-            //封装Vo
-            MtimeFilmT filmT = filmMapper.selectById(filmId);
-            //电影场次似乎暂时没有日期date
-            String beginTime = fieldT.getBeginTime();
-            StringBuffer fieldTime = new StringBuffer();
-            fieldTime.append(beginTime);
-            MtimeCinemaT cinemaT = cinemaMapper.selectById(fieldT.getCinemaId());
-            long orderTimestamp = orderTime.getTime();
-            OrderVo orderVo = new OrderVo(uuid, filmT.getFilmName(), fieldTime.toString(),
-                    cinemaT.getCinemaName(), seatsName, String.valueOf(orderPrice), orderTimestamp, "待支付");
-            return orderVo;
-        }
-        return null;
-    }
-
-    @Override
-    public List<OrderVo> getOrderInfoByUsername(String username, int nowPage, int pageSize) {
-        MtimeUserT userT = new MtimeUserT();
-        userT.setUserName(username);
-        MtimeUserT userT1 = userMapper.selectOne(userT);
-        Integer userId = userT1.getUuid();
-        //获得订单集合
-        EntityWrapper<MtimeOrderT> entityWrapper = new EntityWrapper<>();
-        entityWrapper.where("order_user = {0}",userId);
-        List<MtimeOrderT> orderTS = orderMapper.selectList(entityWrapper);
-        List<OrderVo> orderVos = new ArrayList<>();
-        for (MtimeOrderT orderT : orderTS) {
-            MtimeFilmT filmT = filmMapper.selectById(orderT.getFilmId());
-            MtimeFieldT fieldT = fieldMapper.selectById(orderT.getFieldId());
-            MtimeCinemaT cinemaT = cinemaMapper.selectById(fieldT.getCinemaId());
-            //日期时间？
-            //String beginTime = fieldT.getBeginTime();
-            Integer orderStatus = orderT.getOrderStatus();
-            String orderStatusString = null;
-            //0-待支付,1-已支付,2-已关闭
-            switch (orderStatus) {
-                case 0:
-                    orderStatusString = "待支付";
-                    break;
-                case 1:
-                    orderStatusString = "已支付";
-                    break;
-                case 2:
-                    orderStatusString = "已关闭";
-                    break;
-            }
-            orderVos.add(new OrderVo(String.valueOf(userId), filmT.getFilmName(), fieldT.getBeginTime(),
-                    cinemaT.getCinemaName(), orderT.getSeatsName(), String.valueOf(orderT.getOrderPrice()),
-                    orderT.getOrderTime().getTime(),orderStatusString));
-        }
-        return orderVos;
-    }
-
-    @Override
-    public boolean isTrueSeats(int fieldId, int[] soldSeats, String seatsName) throws IOException {
-        MtimeFieldT fieldT = fieldMapper.selectById(fieldId);
+        StringBuffer seatsName = new StringBuffer();
         MtimeHallDictT hallDictT = new MtimeHallDictT();
         hallDictT.setShowName(fieldT.getHallName());
         MtimeHallDictT hallDictT1 = hallDictMapper.selectOne(hallDictT);
@@ -142,26 +74,142 @@ public class OrderApiImpl implements OrderApi {
         FileReader fileReader = new FileReader("D:\\座位信息json\\" + seatAddress);
         BufferedReader reader = new BufferedReader(fileReader);
         String s = null;
-        StringBuilder sb = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         while ((s = reader.readLine()) != null) {
-            sb = sb.append(s);
+            stringBuilder = stringBuilder.append(s);
         }
-        System.out.println(sb);
-        //不能用强制类型转换，应使用
-        //HallSeats hallSeats = (HallSeats) JSON.parse(sb.toString());
-        HallSeats hallSeats = JSON.parseObject(sb.toString(), HallSeats.class);
-        //获得ids的int数组
-        String hallSeatIds = hallSeats.getIds();
-        String[] split = hallSeatIds.split(",");
-        List<String> ids = Arrays.asList(split);
-        //判断soldSeat中的每个座位，是否对应
+        HallSeats hallSeats = JSON.parseObject(stringBuilder.toString(), HallSeats.class);
+        List<List<Seat>> single = hallSeats.getSingle();
+        StringBuilder stringBuilder1 = new StringBuilder();
         for (int soldSeat : soldSeats) {
-            if (!ids.contains(String.valueOf(soldSeat))) {
-                //不在ids中
-                return false;
+            for (List<Seat> seats : single) {
+                for (Seat seat : seats) {
+                    if (seat.getSeatId() == soldSeat) {
+                        //记录排数和行数
+                        if (stringBuilder1.length() == 0) {
+                            stringBuilder1.append("第").append(seat.getRow()).append("排第").append(seat.getColumn()).append("座");
+                        } else {
+                            stringBuilder1.append(",第").append(seat.getRow()).append("排第").append(seat.getColumn()).append("座");
+                        }
+                    }
+                }
             }
         }
-        char[] seatsNameCharArray = seatsName.toCharArray();
+        List<List<Seat>> couple = hallSeats.getCouple();
+        for (int soldSeat : soldSeats) {
+            for (List<Seat> seats : couple) {
+                for (Seat seat : seats) {
+                    if (seat.getSeatId() == soldSeat) {
+                        //记录排数和行数
+                        if (stringBuilder1.length() == 0) {
+                            stringBuilder1.append("第").append(seat.getRow()).append("排第").append(seat.getColumn()).append("座");
+                        } else {
+                            stringBuilder1.append(",第").append(seat.getRow()).append("排第").append(seat.getColumn()).append("座");
+                        }
+                    }
+                }
+            }
+        }
+            //封装Po
+            MtimeOrderT orderT = new MtimeOrderT();
+            orderT.setUuid(uuid);
+            orderT.setCinemaId(cinemaId);
+            orderT.setFieldId(fieldId);
+            orderT.setFilmId(filmId);
+            orderT.setSeatsIds(sb.toString());
+            orderT.setSeatsName(stringBuilder1.toString());
+            orderT.setFilmPrice(Double.valueOf(filmPrice));
+            orderT.setOrderPrice(Double.valueOf(orderPrice));
+            orderT.setOrderTime(orderTime);
+            orderT.setOrderUser(userT1.getUuid());
+            orderT.setOrderStatus(0);
+            int insert = orderMapper.insert(orderT);
+            if (insert == 1) {
+                //封装Vo
+                MtimeFilmT filmT = filmMapper.selectById(filmId);
+                //电影场次似乎暂时没有日期date
+                String beginTime = fieldT.getBeginTime();
+                StringBuffer fieldTime = new StringBuffer();
+                fieldTime.append(beginTime);
+                MtimeCinemaT cinemaT = cinemaMapper.selectById(fieldT.getCinemaId());
+                long orderTimestamp = orderTime.getTime();
+                OrderVo orderVo = new OrderVo(uuid, filmT.getFilmName(), fieldTime.toString(),
+                        cinemaT.getCinemaName(), stringBuilder1.toString(), String.valueOf(orderPrice), orderTimestamp, "待支付");
+                return orderVo;
+            }
+            return null;
+        }
+
+        @Override
+        public List<OrderVo> getOrderInfoByUsername (String username,int nowPage, int pageSize){
+            MtimeUserT userT = new MtimeUserT();
+            userT.setUserName(username);
+            MtimeUserT userT1 = userMapper.selectOne(userT);
+            Integer userId = userT1.getUuid();
+            //获得订单集合
+            EntityWrapper<MtimeOrderT> entityWrapper = new EntityWrapper<>();
+            entityWrapper.where("order_user = {0}", userId);
+            List<MtimeOrderT> orderTS = orderMapper.selectList(entityWrapper);
+            List<OrderVo> orderVos = new ArrayList<>();
+            for (MtimeOrderT orderT : orderTS) {
+                MtimeFilmT filmT = filmMapper.selectById(orderT.getFilmId());
+                MtimeFieldT fieldT = fieldMapper.selectById(orderT.getFieldId());
+                MtimeCinemaT cinemaT = cinemaMapper.selectById(fieldT.getCinemaId());
+                //日期时间？
+                //String beginTime = fieldT.getBeginTime();
+                Integer orderStatus = orderT.getOrderStatus();
+                String orderStatusString = null;
+                //0-待支付,1-已支付,2-已关闭
+                switch (orderStatus) {
+                    case 0:
+                        orderStatusString = "待支付";
+                        break;
+                    case 1:
+                        orderStatusString = "已支付";
+                        break;
+                    case 2:
+                        orderStatusString = "已关闭";
+                        break;
+                }
+                orderVos.add(new OrderVo(String.valueOf(userId), filmT.getFilmName(), fieldT.getBeginTime(),
+                        cinemaT.getCinemaName(), orderT.getSeatsName(), String.valueOf(orderT.getOrderPrice()),
+                        orderT.getOrderTime().getTime(), orderStatusString));
+            }
+            return orderVos;
+        }
+
+        @Override
+        public boolean isTrueSeats ( int fieldId, int[] soldSeats, String seatsName) throws IOException {
+            MtimeFieldT fieldT = fieldMapper.selectById(fieldId);
+            MtimeHallDictT hallDictT = new MtimeHallDictT();
+            hallDictT.setShowName(fieldT.getHallName());
+            MtimeHallDictT hallDictT1 = hallDictMapper.selectOne(hallDictT);
+            String seatAddress = hallDictT1.getSeatAddress();
+            //读取座位信息json，然后判断座位是否在影厅中，暂时使用本地磁盘的文件读取座位信息
+            FileReader fileReader = new FileReader("D:\\座位信息json\\" + seatAddress);
+            BufferedReader reader = new BufferedReader(fileReader);
+            String s = null;
+            StringBuilder sb = new StringBuilder();
+            while ((s = reader.readLine()) != null) {
+                sb = sb.append(s);
+            }
+
+            //不能用强制类型转换，应使用
+            //HallSeats hallSeats = (HallSeats) JSON.parse(sb.toString());
+            HallSeats hallSeats = JSON.parseObject(sb.toString(), HallSeats.class);
+            //获得ids的int数组
+            String hallSeatIds = hallSeats.getIds();
+            String[] split = hallSeatIds.split(",");
+            List<String> ids = Arrays.asList(split);
+            //判断soldSeat中的每个座位，是否对应
+            for (int soldSeat : soldSeats) {
+                if (!ids.contains(String.valueOf(soldSeat))) {
+                    //不在ids中
+                    return false;
+                }
+            }
+            //由于前端传的数据不是类似"第一排1座,第一排2座,第一排3座,第一排4座"，所以下面的代码无用
+        /*char[] seatsNameCharArray = seatsName.toCharArray();
         ///[\x{4e00}-\x{4e5d}]/u 一到九汉字的正则
         //String rowRegex = "[\\u4e00-\\u4e5d]";
         String rowRegex = "[零一二三四五六七八九十]";
@@ -243,27 +291,27 @@ public class OrderApiImpl implements OrderApi {
                 return false;
             }
             i++;
+        }*/
+            return true;
         }
-        return true;
-    }
 
-    @Override
-    public boolean isSeatsOnSaling(int[] soldSeats, int fieldId) {
-        EntityWrapper<MtimeOrderT> entityWrapper = new EntityWrapper<>();
-        entityWrapper.where("field_id = {0}", fieldId);
-        List<MtimeOrderT> ordersByFieldId = orderMapper.selectList(entityWrapper);
-        for (int soldSeat : soldSeats) {
-            for (MtimeOrderT orderT : ordersByFieldId) {
-                String seatsIds = orderT.getSeatsIds();
-                String[] split = seatsIds.split(",");
-                for (String seatId : split) {
-                    if (seatId.equals(String.valueOf(soldSeat))) {
-                        return false;
+        @Override
+        public boolean isSeatsOnSaling ( int[] soldSeats, int fieldId){
+            EntityWrapper<MtimeOrderT> entityWrapper = new EntityWrapper<>();
+            entityWrapper.where("field_id = {0}", fieldId);
+            List<MtimeOrderT> ordersByFieldId = orderMapper.selectList(entityWrapper);
+            for (int soldSeat : soldSeats) {
+                for (MtimeOrderT orderT : ordersByFieldId) {
+                    String seatsIds = orderT.getSeatsIds();
+                    String[] split = seatsIds.split(",");
+                    for (String seatId : split) {
+                        if (seatId.equals(String.valueOf(soldSeat))) {
+                            return false;
+                        }
                     }
                 }
             }
+            return true;
         }
-        return true;
-    }
-
 }
+
