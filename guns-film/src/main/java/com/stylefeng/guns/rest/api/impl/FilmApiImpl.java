@@ -128,16 +128,16 @@ public class FilmApiImpl implements FilmApi {
                 sb.append(s).append(",");
             }
         }
-        filmDetailVo.setInfo1(sb.toString());
+        filmDetailVo.setInfo01(sb.toString());
         int filmArea = filmT.getFilmArea();
         String areaName = sourceMapper.selectById(filmArea).getShowName();
         int sourceArea = filmT.getFilmSource();
         String sourceName = sourceMapper.selectById(sourceArea).getShowName();
         int filmLength = filmInfo.getFilmLength();
-        filmDetailVo.setInfo2(areaName + ", " + sourceName + "/" + filmLength + "分钟");
+        filmDetailVo.setInfo02(areaName + ", " + sourceName + "/" + filmLength + "分钟");
         Date filmTime = filmT.getFilmTime();
         String filmDate = new DateConvert().convert(filmTime);
-        filmDetailVo.setInfo3(filmDate + " " + areaName + "上映");
+        filmDetailVo.setInfo03(filmDate + " " + areaName + "上映");
         String biography = filmInfo.getBiography();
         int directorId = filmInfo.getDirectorId();
         MtimeActorT directorT = actorMapper.selectById(directorId);
@@ -152,11 +152,11 @@ public class FilmApiImpl implements FilmApi {
         director.setDirectorName(directorT.getActorName());
         director.setImgAddress(directorT.getActorImg());
         Actors actors = new Actors(director,actorList);
-        filmDetailVo.setInfo4(new InfoVo(biography, actors));
+        filmDetailVo.setInfo04(new InfoVo(biography, actors));
         String filmImgs = filmInfo.getFilmImgs();
         String[] split1 = filmImgs.split(",");
         Imgs imgs = new Imgs(split1[0],split1[1],split1[2],split1[3],split1[4]);
-        filmDetailVo.setImgs(imgs);
+        filmDetailVo.setImgVO(imgs);
         filmDetailVo.setFilmId(filmT.getUuid());
         return filmDetailVo;
     }
