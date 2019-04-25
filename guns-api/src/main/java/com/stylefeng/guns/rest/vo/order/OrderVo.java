@@ -15,12 +15,12 @@ public class OrderVo implements Serializable {
     private String seatsName;
     private String orderPrice;
     private Long orderTimestamp;       //订单时间？
+    private String orderStatus;
 
     public OrderVo() {
     }
 
-
-    public OrderVo(String orderId, String filmName, String fieldTime, String cinemaName, String seatsName, String orderPrice, Long orderTimestamp) {
+    public OrderVo(String orderId, String filmName, String fieldTime, String cinemaName, String seatsName, String orderPrice, Long orderTimestamp, String orderStatus) {
         this.orderId = orderId;
         this.filmName = filmName;
         this.fieldTime = fieldTime;
@@ -28,6 +28,15 @@ public class OrderVo implements Serializable {
         this.seatsName = seatsName;
         this.orderPrice = orderPrice;
         this.orderTimestamp = orderTimestamp;
+        this.orderStatus = orderStatus;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public String getOrderId() {
