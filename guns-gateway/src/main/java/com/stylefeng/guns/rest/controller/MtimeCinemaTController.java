@@ -123,9 +123,14 @@ public class MtimeCinemaTController {
             map.put("msg","系统出现异常，请联系管理员");
             return map;
         }
-
-        Map data = mtimeCinemaTService.selectFieldByCinemaIdAndFieldId(cinemaId,fieldId);
-
+        Map data = null;
+    try {
+        data = mtimeCinemaTService.selectFieldByCinemaIdAndFieldId(cinemaId, fieldId);
+    }catch (Exception e){
+        map.put("status",999);
+        map.put("msg","系统出现异常，请联系管理员");
+        return map;
+    }
         if(!data.isEmpty()){
             map.put("status",0);
             map.put("imgPre","http://img.meetingshop.cn/");

@@ -13,11 +13,11 @@ public class FilmDetailVo implements Serializable {
     private String score;//
     private String socreNum;
     private String totalBox;//
-    private String info1;//film_cats查询，拼接字符串
-    private String info2;//film_area,film_source/film_length(film_info_t)拼接字符串
-    private String info3;//film_time film_area上映，拼接字符串
-    private InfoVo info4;//film_info_t 包含剧情简介,导演，演员
-    private Imgs imgs; //film_info_t
+    private String info01;//film_cats查询，拼接字符串
+    private String info02;//film_area,film_source/film_length(film_info_t)拼接字符串
+    private String info03;//film_time film_area上映，拼接字符串
+    private InfoVo info04;//film_info_t 包含剧情简介,导演，演员
+    private Imgs imgVO;//film_info_t
     private int filmId;
 
     public int getFilmId() {
@@ -76,43 +76,43 @@ public class FilmDetailVo implements Serializable {
         this.totalBox = totalBox;
     }
 
-    public String getInfo1() {
-        return info1;
+    public String getInfo01() {
+        return info01;
     }
 
-    public void setInfo1(String info1) {
-        this.info1 = info1;
+    public void setInfo01(String info01) {
+        this.info01 = info01;
     }
 
-    public String getInfo2() {
-        return info2;
+    public String getInfo02() {
+        return info02;
     }
 
-    public void setInfo2(String info2) {
-        this.info2 = info2;
+    public void setInfo02(String info02) {
+        this.info02 = info02;
     }
 
-    public String getInfo3() {
-        return info3;
+    public String getInfo03() {
+        return info03;
     }
 
-    public void setInfo3(String info3) {
-        this.info3 = info3;
+    public void setInfo03(String info03) {
+        this.info03 = info03;
     }
 
-    public InfoVo getInfo4() {
-        return info4;
+    public InfoVo getInfo04() {
+        return info04;
     }
 
-    public void setInfo4(InfoVo info4) {
-        this.info4 = info4;
+    public void setInfo04(InfoVo info04) {
+        this.info04 = info04;
     }
 
-    public Imgs getImgs() {
-        return imgs;
+    public Imgs getImgVO() {
+        return imgVO;
     }
 
-    public void setImgs(Imgs imgs) {
-        this.imgs = imgs;
+    public void setImgVO(Imgs imgVO) {
+        this.imgVO = imgVO;
     }
 }

@@ -7,9 +7,11 @@ import com.stylefeng.guns.rest.persistence.dao.MtimeCinemaTMapper;
 import com.stylefeng.guns.rest.persistence.dao.MtimeFieldTMapper;
 import com.stylefeng.guns.rest.persistence.dao.MtimeHallFilmInfoTMapper;
 
+import com.stylefeng.guns.rest.persistence.dao.MtimeOrder2018TMapper;
 import com.stylefeng.guns.rest.persistence.model.MtimeCinemaT;
 import com.stylefeng.guns.rest.persistence.model.MtimeFieldT;
 import com.stylefeng.guns.rest.persistence.model.MtimeHallFilmInfoT;
+import com.stylefeng.guns.rest.persistence.model.MtimeOrder2018T;
 import com.stylefeng.guns.rest.vo.cinema.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,6 +41,8 @@ public class MtimeCinemaTServiceImpl extends ServiceImpl<MtimeCinemaTMapper, Mti
     MtimeFieldTMapper mtimeFieldTMapper;
     @Autowired
     MtimeHallFilmInfoTMapper mtimeHallFilmInfoTMapper;
+    @Autowired
+    MtimeOrder2018TMapper mtimeOrder2018TMapper;
 
     @Override
     public Map selectCinemaByBrandIdDistrictIdHallType(String brandId,String districtId,String hallType,int nowPage,int pageSize) {
@@ -140,7 +144,10 @@ public class MtimeCinemaTServiceImpl extends ServiceImpl<MtimeCinemaTMapper, Mti
             hallInfoVo.setHallName(mtimeFieldT.getHallName());
             hallInfoVo.setPrice(mtimeFieldT.getPrice());
             hallInfoVo.setSeatFile(mtimeFieldT.getSeatAddress());
-            hallInfoVo.setSoldSeats("1,2,3,5,12");
+
+            MtimeOrder2018T mtimeOrder2018T = mtimeOrder2018TMapper.selectMtimeOrder2018TByFieldId(fieldId);
+            //hallInfoVo.setSoldSeats("1,2,3,5,12");
+            hallInfoVo.setSoldSeats(mtimeOrder2018T.getSeatsIds());
             map.put("hallInfo",hallInfoVo);
         }
 
