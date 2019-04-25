@@ -3,6 +3,7 @@ package com.stylefeng.guns.rest.api;
 import com.stylefeng.guns.rest.vo.order.OrderVo;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by Cyb
@@ -14,4 +15,6 @@ public interface OrderApi {
     boolean isSeatsOnSaling(int[] soldSeats, int fieldId);
 
     OrderVo placeOrder(int fieldId, int[] soldSeats, String seatsName, String username);
+
+    List<OrderVo> getOrderInfoByUsername(String username, int nowPage, int pageSize);
 }

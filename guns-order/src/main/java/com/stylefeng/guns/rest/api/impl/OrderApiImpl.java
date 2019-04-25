@@ -42,6 +42,7 @@ public class OrderApiImpl implements OrderApi {
 
     @Autowired
     MtimeCinemaTMapper cinemaMapper;
+
     @Override
     public OrderVo placeOrder(int fieldId, int[] soldSeats, String seatsName, String username) {
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
@@ -49,11 +50,10 @@ public class OrderApiImpl implements OrderApi {
         Integer cinemaId = fieldT.getCinemaId();
         Integer filmId = fieldT.getFilmId();
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i <soldSeats.length ; i++) {
-            if (i != soldSeats.length - 1){
+        for (int i = 0; i < soldSeats.length; i++) {
+            if (i != soldSeats.length - 1) {
                 sb.append(soldSeats[i]).append(",");
-            }
-            else {
+            } else {
                 sb.append(soldSeats[i]);
             }
         }
@@ -86,11 +86,49 @@ public class OrderApiImpl implements OrderApi {
             fieldTime.append(beginTime);
             MtimeCinemaT cinemaT = cinemaMapper.selectById(fieldT.getCinemaId());
             long orderTimestamp = orderTime.getTime();
-            OrderVo orderVo = new OrderVo(uuid,filmT.getFilmName(),fieldTime.toString(),
-                    cinemaT.getCinemaName(),seatsName,String.valueOf(orderPrice),orderTimestamp);
+            OrderVo orderVo = new OrderVo(uuid, filmT.getFilmName(), fieldTime.toString(),
+                    cinemaT.getCinemaName(), seatsName, String.valueOf(orderPrice), orderTimestamp, "待支付");
             return orderVo;
         }
         return null;
+    }
+
+    @Override
+    public List<OrderVo> getOrderInfoByUsername(String username, int nowPage, int pageSize) {
+        MtimeUserT userT = new MtimeUserT();
+        userT.setUserName(username);
+        MtimeUserT userT1 = userMapper.selectOne(userT);
+        Integer userId = userT1.getUuid();
+        //获得订单集合
+        EntityWrapper<MtimeOrderT> entityWrapper = new EntityWrapper<>();
+        entityWrapper.where("order_user = {0}",userId);
+        List<MtimeOrderT> orderTS = orderMapper.selectList(entityWrapper);
+        List<OrderVo> orderVos = new ArrayList<>();
+        for (MtimeOrderT orderT : orderTS) {
+            MtimeFilmT filmT = filmMapper.selectById(orderT.getFilmId());
+            MtimeFieldT fieldT = fieldMapper.selectById(orderT.getFieldId());
+            MtimeCinemaT cinemaT = cinemaMapper.selectById(fieldT.getCinemaId());
+            //日期时间？
+            //String beginTime = fieldT.getBeginTime();
+            Integer orderStatus = orderT.getOrderStatus();
+            String orderStatusString = null;
+            //0-待支付,1-已支付,2-已关闭
+            switch (orderStatus) {
+                case 0:
+                    orderStatusString = "待支付";
+                    break;
+                case 1:
+                    orderStatusString = "已支付";
+                    break;
+                case 2:
+                    orderStatusString = "已关闭";
+                    break;
+            }
+            orderVos.add(new OrderVo(String.valueOf(userId), filmT.getFilmName(), fieldT.getBeginTime(),
+                    cinemaT.getCinemaName(), orderT.getSeatsName(), String.valueOf(orderT.getOrderPrice()),
+                    orderT.getOrderTime().getTime(),orderStatusString));
+        }
+        return orderVos;
     }
 
     @Override
