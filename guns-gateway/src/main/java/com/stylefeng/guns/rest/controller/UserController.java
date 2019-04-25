@@ -78,11 +78,11 @@ public class UserController {
     }
 
     @RequestMapping(value = "auth", method = RequestMethod.POST)
-    public ResponseVo login(@RequestParam String username, @RequestParam String password) {
+    public ResponseVo login(@RequestParam String userName, @RequestParam String password) {
         String username1 = null;
         ResponseVo responseVo = new ResponseVo();
         try {
-            username1 = userApi.login(username, password);
+            username1 = userApi.login(userName, password);
         } catch (Exception e) {
             responseVo.setStatus(999);
             responseVo.setMsg("系统出现异常，请联系管理员");
@@ -95,7 +95,7 @@ public class UserController {
         }
         //生成token
         String randomKey = jwtTokenUtil.getRandomKey();
-        String token = jwtTokenUtil.generateToken(username, randomKey);
+        String token = jwtTokenUtil.generateToken(userName, randomKey);
         AuthVo authVo = new AuthVo(randomKey, token);
         responseVo.setStatus(0);
         responseVo.setData(authVo);
