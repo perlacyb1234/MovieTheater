@@ -14,7 +14,7 @@ public class FilmInfoVo implements Serializable {
     String filmLength;
     String filmType;
     String filmCats;
-    String actor;
+    String actors;
     String imgAddress;
 
     ArrayList<FilmFieldVo> filmFields;
@@ -59,12 +59,12 @@ public class FilmInfoVo implements Serializable {
         this.filmCats = filmCats;
     }
 
-    public String getActor() {
-        return actor;
+    public String getActors() {
+        return actors;
     }
 
-    public void setActor(String actor) {
-        this.actor = actor;
+    public void setActors(String actors) {
+        this.actors = actors;
     }
 
     public String getImgAddress() {

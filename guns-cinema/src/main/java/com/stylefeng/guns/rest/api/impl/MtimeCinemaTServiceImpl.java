@@ -84,7 +84,8 @@ public class MtimeCinemaTServiceImpl extends ServiceImpl<MtimeCinemaTMapper, Mti
         /*通过cinemaId查询mtime_field_t表获取field全属性bean MtimeFieldT的list*/
         ArrayList<MtimeFieldT> mtimeFilmFieldList = mtimeFieldTMapper.selectFilmFieldsByCinemaId(cinemaId);
         ArrayList<MtimeHallFilmInfoT> mtimeHallFilmInfoList = new ArrayList<>();
-        ArrayList<Map<String,Object>> filmList = new ArrayList<>();
+        //ArrayList<Map<String,Object>> filmList = new ArrayList<>();
+        ArrayList<FilmInfoVo> filmList = new ArrayList<>();
 
         for (MtimeFieldT mtimeFieldT : mtimeFilmFieldList) {
             /*通过field list中的每一个field bean film_id字段查询mtime_hall_film_info_t
@@ -103,9 +104,10 @@ public class MtimeCinemaTServiceImpl extends ServiceImpl<MtimeCinemaTMapper, Mti
             FilmInfoVo filmInfoVo = getFilmInFoVoFromMtimeHallFilmInfoT(filmInfo,mtimeFilmFieldList);
 
 
-            HashMap<String, Object> hashMap = new HashMap<>();
-            hashMap.put("filmInfo",filmInfoVo);
-            filmList.add(hashMap);
+            //HashMap<String, Object> hashMap = new HashMap<>();
+            //hashMap.put("filmInfo",filmInfoVo);
+            //filmList.add(hashMap);
+            filmList.add(filmInfoVo);
         }
 
         if(!filmList.isEmpty()){
@@ -174,7 +176,7 @@ public class MtimeCinemaTServiceImpl extends ServiceImpl<MtimeCinemaTMapper, Mti
         filmInfoVo.setFilmName(filmInfo.getFilmName());
         filmInfoVo.setFilmLength(filmInfo.getFilmLength());
         filmInfoVo.setFilmCats(filmInfo.getFilmCats());
-        filmInfoVo.setActor(filmInfo.getActors());
+        filmInfoVo.setActors(filmInfo.getActors());
         filmInfoVo.setImgAddress(filmInfo.getImgAddress());
 
         /* 0-2D,1-3D,2-3DIMAX,4-无*/
