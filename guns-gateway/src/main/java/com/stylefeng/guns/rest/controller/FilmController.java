@@ -44,7 +44,7 @@ public class FilmController {
             responseVo.setMsg("查询失败，无banner可加载");
             return responseVo;
         }
-        if (hotFilms == null || hotFilms.getFilmNum() == 0) {
+        /*if (hotFilms == null || hotFilms.getFilmNum() == 0) {
             responseVo.setStatus(1);
             responseVo.setMsg("查询失败，无hotFilms可加载");
             return responseVo;
@@ -68,7 +68,7 @@ public class FilmController {
             responseVo.setStatus(1);
             responseVo.setMsg("查询失败，无top100可加载");
             return responseVo;
-        }
+        }*/
         IndexVo indexVo = new IndexVo(bannerVos, hotFilms, soonFilms, boxRanking, expectRanking, top100);
         responseVo.setStatus(0);
         responseVo.setImgPre("http://img.meetingshop.cn/");

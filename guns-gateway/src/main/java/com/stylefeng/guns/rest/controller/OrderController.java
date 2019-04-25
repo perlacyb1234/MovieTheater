@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by Cyb
@@ -25,7 +26,7 @@ public class OrderController {
 
     @RequestMapping(value = "buyTickets", method = RequestMethod.POST)
     public ResponseVo buyTickets(@RequestParam int fieldId, @RequestParam int[] soldSeats,
-                                 @RequestParam String seatsName, HttpServletRequest request) throws IOException {
+                                 @RequestParam String seatsName, HttpServletRequest request){
         ResponseVo responseVo = new ResponseVo();
         responseVo.setStatus(999);
         responseVo.setMsg("系统出现异常，请联系管理员");
@@ -53,6 +54,32 @@ public class OrderController {
             responseVo.setData(orderVo);
             return responseVo;
         }
+        return responseVo;
+    }
+    @RequestMapping(value = "getOrderInfo",method = RequestMethod.POST)
+    public ResponseVo getOrderInfo(HttpServletRequest request,
+                                   @RequestParam(value = "nowPage",defaultValue = "1")int nowPage,
+                                   @RequestParam(value = "pageSize",defaultValue = "5")int pageSize){
+        ResponseVo responseVo = new ResponseVo();
+        responseVo.setStatus(999);
+        responseVo.setMsg("系统出现异常，请联系管理员");
+        List<OrderVo> orderVos = null;
+        try {
+            String header = request.getHeader("Authorization");
+            String authToken = header.substring(7);
+            String username = jwtTokenUtil.getUsernameFromToken(authToken);
+            orderVos = orderApi.getOrderInfoByUsername(username,nowPage,pageSize);
+        } catch (Exception e) {
+            return responseVo;
+        }
+        if (orderVos.size() == 0){
+            responseVo.setStatus(1);
+            responseVo.setMsg("订单列表为空哦！~");
+            return responseVo;
+        }
+        responseVo.setStatus(0);
+        responseVo.setMsg("");
+        responseVo.setData(orderVos);
         return responseVo;
     }
 }
