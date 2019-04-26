@@ -15,15 +15,15 @@
         <result column="minimum_price" property="minimumPrice" />
     </resultMap>
 
-    <select id="selectCinemaByBrandIdDistrictIdHallType" resultMap="BaseResultMap">
+    <select id="selectCinemaByBrandIdAreaIdHallType" resultMap="BaseResultMap">
         select UUID,cinema_name,cinema_phone,brand_id,area_id,hall_ids,img_address,cinema_address,minimum_price
         from mtime_cinema_t
         <where>
             <if test="brandId != '99'">
                 brand_id = #{brandId}
             </if>
-            <if test="districtId != '99'">
-            and  area_id = #{districtId}
+            <if test="areaId != '99'">
+            and  area_id = #{areaId}
             </if>
             <if test="hallType != '99'">
             and  hall_ids like '%${hallType}%'

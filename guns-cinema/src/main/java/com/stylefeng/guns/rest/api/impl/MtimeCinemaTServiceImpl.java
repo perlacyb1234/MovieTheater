@@ -45,11 +45,11 @@ public class MtimeCinemaTServiceImpl extends ServiceImpl<MtimeCinemaTMapper, Mti
     MtimeOrder2018TMapper mtimeOrder2018TMapper;
 
     @Override
-    public Map selectCinemaByBrandIdDistrictIdHallType(String brandId,String districtId,String hallType,int nowPage,int pageSize) {
+    public Map selectCinemaByBrandIdAreaIdHallType(String brandId,String areaId,String hallType,int nowPage,int pageSize) {
 
         HashMap<String, Object> map = new HashMap<>();
 
-        ArrayList<MtimeCinemaT> mtimeCinemaTS = mtimeCinemaTMapper.selectCinemaByBrandIdDistrictIdHallType(brandId,districtId,hallType);
+        ArrayList<MtimeCinemaT> mtimeCinemaTS = mtimeCinemaTMapper.selectCinemaByBrandIdAreaIdHallType(brandId,areaId,hallType);
         ArrayList<CinemaVo> cinemaList = new ArrayList<>();
         for (MtimeCinemaT mtimeCinemaT : mtimeCinemaTS) {
             // 通过getCinemaVo方法将MtimeCinemaT(mtime_cinema_t)中报文所需的部分内容抽取出来封装到封装类CinemaVo中

@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public interface IMtimeCinemaTService{
 
-    Map selectCinemaByBrandIdDistrictIdHallType(String brandId, String districtId, String hallType, int nowPage, int pageSize);
+    Map selectCinemaByBrandIdAreaIdHallType(String brandId, String areaId, String hallType, int nowPage, int pageSize);
 
     Map selectFieldsById(String cinemaId);
 
