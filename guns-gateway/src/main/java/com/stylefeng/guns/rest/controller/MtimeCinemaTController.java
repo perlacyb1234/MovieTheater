@@ -43,7 +43,7 @@ public class MtimeCinemaTController {
         int now_page = Integer.parseInt(nowPage);
         int page_size = Integer.parseInt(pageSize);
         try{
-            map = mtimeCinemaTService.selectCinemaByBrandIdDistrictIdHallType(brandId,districtId,hallType,now_page,page_size);
+            map = mtimeCinemaTService.selectCinemaByBrandIdAreaIdHallType(brandId,districtId,hallType,now_page,page_size);
         }catch (Exception e){
             map.put("status",999);
             map.put("msg","系统出现异常，请联系管理员");
