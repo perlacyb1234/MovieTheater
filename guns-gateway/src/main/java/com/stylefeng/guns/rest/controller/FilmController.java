@@ -21,6 +21,8 @@ public class FilmController {
     @RequestMapping(value = "getIndex", method = RequestMethod.GET)
     public ResponseVo getIndex() {
         ResponseVo responseVo = new ResponseVo();
+        responseVo.setStatus(999);
+        responseVo.setMsg("系统出现异常，请联系管理员");
         List<BannerVo> bannerVos = null;
         FilmsVo hotFilms = null;
         FilmsVo soonFilms = null;
@@ -35,8 +37,6 @@ public class FilmController {
             expectRanking = filmApi.selectExpectRanking();
             top100 = filmApi.selectTop100();
         } catch (Exception e) {
-            responseVo.setStatus(999);
-            responseVo.setMsg("系统出现异常，请联系管理员");
             return responseVo;
         }
         if (bannerVos == null || bannerVos.size() == 0) {
@@ -71,14 +71,18 @@ public class FilmController {
         }*/
         IndexVo indexVo = new IndexVo(bannerVos, hotFilms, soonFilms, boxRanking, expectRanking, top100);
         responseVo.setStatus(0);
-        responseVo.setImgPre("http://img.meetingshop.cn/");
+        responseVo.setImgPre("https://wangdao-movietheater-project.oss-cn-beijing.aliyuncs.com/");
         responseVo.setData(indexVo);
+        responseVo.setMsg("OK");
         return responseVo;
     }
 
 
     @RequestMapping(value = "getConditionList", method = RequestMethod.GET)
     public ResponseVo getCondition() {
+        ResponseVo responseVo = new ResponseVo();
+        responseVo.setStatus(999);
+        responseVo.setMsg("系统出现异常，请联系管理员");
         List<CatInfoVo> catInfoVos = null;
         List<SourceInfoVo> sourceInfoVos = null;
         List<YearInfoVo> yearInfoVos = null;
@@ -87,19 +91,17 @@ public class FilmController {
             sourceInfoVos = filmApi.selectAllSourceInfo();
             yearInfoVos = filmApi.selectAllYearInfo();
         } catch (Exception e) {
-            ResponseVo responseVo = new ResponseVo();
-            responseVo.setStatus(999);
-            responseVo.setMsg("系统出现异常，请联系管理员");
             return responseVo;
         }
         if (catInfoVos.size() == 0 ||sourceInfoVos.size() == 0 || yearInfoVos.size() == 0){
-            ResponseVo responseVo = new ResponseVo();
             responseVo.setStatus(1);
             responseVo.setMsg("查询失败，无条件可加载");
             return responseVo;
         }
         ConditionInfoVo conditionInfoVo = new ConditionInfoVo(catInfoVos, sourceInfoVos, yearInfoVos);
-        ResponseVo responseVo = new ResponseVo(0, conditionInfoVo);
+        responseVo.setStatus(0);
+        responseVo.setData(conditionInfoVo);
+        responseVo.setMsg("OK");
         return responseVo;
     }
 
@@ -111,6 +113,9 @@ public class FilmController {
                                @RequestParam(value = "yearId", defaultValue = "99") int yearId,
                                @RequestParam(value = "nowPage", defaultValue = "1") int nowPage,
                                @RequestParam(value = "pageSize", defaultValue = "18") int pageSize) {
+        ResponseVo responseVo = new ResponseVo();
+        responseVo.setStatus(999);
+        responseVo.setMsg("系统出现异常，请联系管理员");
         List<FilmInfoVo> filmInfoVos =
                 null;
         int totalPage = 0;
@@ -122,34 +127,35 @@ public class FilmController {
                 totalPage = 1;
             }
         } catch (Exception e) {
-            ResponseVo responseVo = new ResponseVo();
-            responseVo.setStatus(999);
-            responseVo.setMsg("系统出现异常，请联系管理员");
             return responseVo;
         }
-        ResponseVo responseVo = new ResponseVo(0, "http://img.meetingshop.cn/", filmInfoVos,
+        responseVo = new ResponseVo(0, "https://wangdao-movietheater-project.oss-cn-beijing.aliyuncs.com/", filmInfoVos,
                 nowPage, totalPage);
+        responseVo.setMsg("OK");
         return responseVo;
     }
 
     @RequestMapping("films/{searchValue}")
     public ResponseVo getFilmDetail(@PathVariable("searchValue") String searchValue, String searchType) {
+        ResponseVo responseVo = new ResponseVo();
+        responseVo.setStatus(999);
+        responseVo.setMsg("系统出现异常，请联系管理员");
         FilmDetailVo filmDetail = null;
         try {
             filmDetail = filmApi.getFilmDetail(searchValue, searchType);
         } catch (Exception e) {
-            ResponseVo responseVo = new ResponseVo();
-            responseVo.setStatus(999);
-            responseVo.setMsg("系统出现异常，请联系管理员");
             return responseVo;
         }
         if (filmDetail == null){
-            ResponseVo responseVo = new ResponseVo();
             responseVo.setStatus(1);
             responseVo.setMsg("查询失败，无影片可加载");
             return responseVo;
         }
-        ResponseVo responseVo = new ResponseVo(0, "localhost:8080/", filmDetail);
+        responseVo.setStatus(0);
+        //图片头
+        responseVo.setImgPre("https://wangdao-movietheater-project.oss-cn-beijing.aliyuncs.com/");
+        responseVo.setData(filmDetail);
+        responseVo.setMsg("OK");
         return responseVo;
     }
 }

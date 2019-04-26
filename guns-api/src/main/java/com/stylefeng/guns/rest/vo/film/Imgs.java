@@ -7,7 +7,7 @@ import java.io.Serializable;
  * Date 2019/4/23/023  Time 19:13
  */
 public class Imgs implements Serializable {
-    private String mainImg;
+    private String mainImg; //影片详情下面的图集
     private String img01;
     private String img02;
     private String img03;

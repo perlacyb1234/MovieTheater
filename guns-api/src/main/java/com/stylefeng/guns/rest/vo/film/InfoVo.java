@@ -10,13 +10,33 @@ import java.util.List;
 public class InfoVo implements Serializable {
     private String biography;
     private Actors actors;
+    private Imgs imgVO;//film_info_t
+    private int filmId;
 
     public InfoVo() {
     }
 
-    public InfoVo(String biography, Actors actors) {
+    public InfoVo(String biography, Actors actors, Imgs imgVO, int filmId) {
         this.biography = biography;
         this.actors = actors;
+        this.imgVO = imgVO;
+        this.filmId = filmId;
+    }
+
+    public Imgs getImgVO() {
+        return imgVO;
+    }
+
+    public void setImgVO(Imgs imgVO) {
+        this.imgVO = imgVO;
+    }
+
+    public int getFilmId() {
+        return filmId;
+    }
+
+    public void setFilmId(int filmId) {
+        this.filmId = filmId;
     }
 
     public String getBiography() {

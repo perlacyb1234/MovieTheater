@@ -44,7 +44,7 @@ public class OrderController {
         }
         if (!ret || !ret2) {
             responseVo.setStatus(1);
-            responseVo.setMsg("该订单不存在");
+            responseVo.setMsg("座位号有误，或座位已被选购");
             return responseVo;
         }
         OrderVo orderVo = null;

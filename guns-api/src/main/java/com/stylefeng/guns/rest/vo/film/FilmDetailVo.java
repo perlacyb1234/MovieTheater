@@ -13,20 +13,15 @@ public class FilmDetailVo implements Serializable {
     private String score;//
     private String socreNum;
     private String totalBox;//
-    private String info01;//film_cats查询，拼接字符串
-    private String info02;//film_area,film_source/film_length(film_info_t)拼接字符串
-    private String info03;//film_time film_area上映，拼接字符串
-    private InfoVo info04;//film_info_t 包含剧情简介,导演，演员
-    private Imgs imgVO;//film_info_t
-    private int filmId;
+    private String info01;                                              //film_cats查询，拼接字符串
+    private String info02;                                               //film_area,film_source/film_length(film_info_t)拼接字符串
+    private String info03;                                                  //film_time film_area上映，拼接字符串
+    private InfoVo info04;            //应包含imgVo和filmId
+    //private Imgs imgVO;             //应该在info04里面，接口文档有误
+    //private int filmId;
 
-    public int getFilmId() {
-        return filmId;
-    }
 
-    public void setFilmId(int filmId) {
-        this.filmId = filmId;
-    }
+
 
     public String getFilmName() {
         return filmName;
@@ -108,11 +103,4 @@ public class FilmDetailVo implements Serializable {
         this.info04 = info04;
     }
 
-    public Imgs getImgVO() {
-        return imgVO;
-    }
-
-    public void setImgVO(Imgs imgVO) {
-        this.imgVO = imgVO;
-    }
-}
+  }

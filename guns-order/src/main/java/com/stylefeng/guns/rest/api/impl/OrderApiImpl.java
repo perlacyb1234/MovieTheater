@@ -3,6 +3,7 @@ package com.stylefeng.guns.rest.api.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.stylefeng.guns.rest.api.OrderApi;
 import com.stylefeng.guns.rest.persistence.dao.*;
 import com.stylefeng.guns.rest.persistence.model.*;
@@ -149,7 +150,8 @@ public class OrderApiImpl implements OrderApi {
             //获得订单集合
             EntityWrapper<MtimeOrderT> entityWrapper = new EntityWrapper<>();
             entityWrapper.where("order_user = {0}", userId);
-            List<MtimeOrderT> orderTS = orderMapper.selectList(entityWrapper);
+            Page<MtimeOrderT> page = new Page<>(nowPage,pageSize);
+            List<MtimeOrderT> orderTS = orderMapper.selectPage(page,entityWrapper);
             List<OrderVo> orderVos = new ArrayList<>();
             for (MtimeOrderT orderT : orderTS) {
                 MtimeFilmT filmT = filmMapper.selectById(orderT.getFilmId());
@@ -298,7 +300,7 @@ public class OrderApiImpl implements OrderApi {
         @Override
         public boolean isSeatsOnSaling ( int[] soldSeats, int fieldId){
             EntityWrapper<MtimeOrderT> entityWrapper = new EntityWrapper<>();
-            entityWrapper.where("field_id = {0}", fieldId);
+            entityWrapper.where("field_id = {0}", fieldId).where("order_status != 2");
             List<MtimeOrderT> ordersByFieldId = orderMapper.selectList(entityWrapper);
             for (int soldSeat : soldSeats) {
                 for (MtimeOrderT orderT : ordersByFieldId) {

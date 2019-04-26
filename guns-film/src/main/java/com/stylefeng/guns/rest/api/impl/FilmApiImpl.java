@@ -30,6 +30,8 @@ public class FilmApiImpl implements FilmApi {
     @Autowired
     MtimeActorTMapper actorMapper;
 
+    @Autowired
+    MtimeCatDictTMapper catDictMapper;
 
     @Autowired
     MtimeFilmInfoTMapper filmInfoMapper;
@@ -114,19 +116,26 @@ public class FilmApiImpl implements FilmApi {
         filmDetailVo.setImgAddress(filmT.getImgAddress());
         filmDetailVo.setScore(filmT.getFilmScore());
         filmDetailVo.setSocreNum(filmInfo.getFilmScoreNum() + "万人评分");
-        filmDetailVo.setTotalBox(filmT.getFilmBoxOffice() + "万人民币");
+        filmDetailVo.setTotalBox(filmT.getFilmBoxOffice() + "万");
         String filmCats = filmT.getFilmCats();
         String[] split = filmCats.split("#");
         StringBuilder sb = new StringBuilder();
+        int i = 0;
         for (String s : split) {
-            int i = 0;
-            i++;
-            //将电影类型通过逗号拼接
-            if (i == split.length) {
-                sb.append(s);
-            } else {
-                sb.append(s).append(",");
+            //分割字符串第一个为空字符串"",跳过
+            if (i == 0){
+                i++;
+                continue;
             }
+            //关系表
+            MtimeCatDictT catDictT = catDictMapper.selectById(Integer.valueOf(s));
+            //将电影类型名称通过逗号拼接
+            if (i == split.length-1) {
+                sb.append(catDictT.getShowName());
+            } else {
+                sb.append(catDictT.getShowName()).append(",");
+            }
+            i++;
         }
         filmDetailVo.setInfo01(sb.toString());
         int filmArea = filmT.getFilmArea();
@@ -152,12 +161,10 @@ public class FilmApiImpl implements FilmApi {
         director.setDirectorName(directorT.getActorName());
         director.setImgAddress(directorT.getActorImg());
         Actors actors = new Actors(director,actorList);
-        filmDetailVo.setInfo04(new InfoVo(biography, actors));
         String filmImgs = filmInfo.getFilmImgs();
         String[] split1 = filmImgs.split(",");
         Imgs imgs = new Imgs(split1[0],split1[1],split1[2],split1[3],split1[4]);
-        filmDetailVo.setImgVO(imgs);
-        filmDetailVo.setFilmId(filmT.getUuid());
+        filmDetailVo.setInfo04(new InfoVo(biography, actors,imgs,filmT.getUuid()));
         return filmDetailVo;
     }
 

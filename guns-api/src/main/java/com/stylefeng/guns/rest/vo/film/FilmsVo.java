@@ -9,15 +9,15 @@ import java.util.List;
  */
 public class FilmsVo implements Serializable{
     private int filmNum;
-    private List<FilmInfoVo> filmInfoVo;
+    private List<FilmInfoVo> filmInfo;
     private int nowPage;
     private int totalPage;
     public FilmsVo() {
     }
 
-    public FilmsVo(int filmNum, List<FilmInfoVo> filmInfoVo, int nowPage, int totalPage) {
+    public FilmsVo(int filmNum, List<FilmInfoVo> filmInfo, int nowPage, int totalPage) {
         this.filmNum = filmNum;
-        this.filmInfoVo = filmInfoVo;
+        this.filmInfo = filmInfo;
         this.nowPage = nowPage;
         this.totalPage = totalPage;
     }
@@ -46,12 +46,12 @@ public class FilmsVo implements Serializable{
         this.filmNum = filmNum;
     }
 
-    public List<FilmInfoVo> getFilmInfoVo() {
-        return filmInfoVo;
+    public List<FilmInfoVo> getFilmInfo() {
+        return filmInfo;
     }
 
-    public void setFilmInfoVo(List<FilmInfoVo> filmInfoVo) {
-        this.filmInfoVo = filmInfoVo;
+    public void setFilmInfo(List<FilmInfoVo> filmInfo) {
+        this.filmInfo = filmInfo;
     }
 }
 
