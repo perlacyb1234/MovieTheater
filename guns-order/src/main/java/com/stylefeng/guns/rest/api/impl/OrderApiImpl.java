@@ -14,11 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-import java.util.regex.Pattern;
 
 /**
  * Created by Cyb
@@ -45,6 +43,33 @@ public class OrderApiImpl implements OrderApi {
     @Autowired
     MtimeCinemaTMapper cinemaMapper;
 
+
+    @Override
+    public OrderVo getOrderById(String orderId) {
+        MtimeOrderT mtimeOrderT = new MtimeOrderT();
+        mtimeOrderT.setUuid(orderId);
+        MtimeOrderT orderT = orderMapper.selectOne(mtimeOrderT);
+        Double orderPrice = orderT.getOrderPrice();
+        Integer fieldId = orderT.getFieldId();
+        MtimeFieldT fieldT = fieldMapper.selectById(fieldId);
+        Integer filmId = orderT.getFilmId();
+        MtimeFilmT filmT = filmMapper.selectById(filmId);
+        //电影场次似乎暂时没有日期date
+        MtimeCinemaT cinemaT = cinemaMapper.selectById(fieldT.getCinemaId());
+        OrderVo orderVo = new OrderVo(orderT.getUuid(), filmT.getFilmName(), fieldT.getBeginTime(),
+                cinemaT.getCinemaName(), orderT.getSeatsName(), String.valueOf(orderPrice), orderT.getOrderTime().getTime(), "待支付");
+        return orderVo;
+    }
+
+    @Override
+    public boolean setOrderStatusOK(String orderId) {
+        MtimeOrderT mtimeOrderT = new MtimeOrderT();
+        mtimeOrderT.setOrderStatus(1);
+        EntityWrapper<MtimeOrderT> entityWrapper = new EntityWrapper<>();
+        entityWrapper.where("UUID = {0}",orderId);
+        Integer update = orderMapper.update(mtimeOrderT, entityWrapper);
+        return update == 1;
+    }
 
     @Override
     public OrderVo placeOrder(int fieldId, int[] soldSeats, String username) throws IOException {
